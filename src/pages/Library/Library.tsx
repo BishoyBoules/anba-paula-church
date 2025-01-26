@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaSearch, FaBook, FaVideo, FaMusic } from 'react-icons/fa';
+import { FaBook, FaVideo, FaMusic } from 'react-icons/fa';
 
 const PageContainer = styled.div`
   padding: 4rem 0;

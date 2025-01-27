@@ -6,14 +6,9 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 const Nav = styled.nav`
   background: #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  padding: 1.5rem;
   position: sticky;
   top: 0;
   z-index: 1000;
-
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-  }
 `;
 
 const Container = styled.div`

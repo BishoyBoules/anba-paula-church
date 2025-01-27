@@ -8,12 +8,15 @@ import StPaul from './pages/About/StPaul';
 import History from './pages/About/History';
 import NewsPage from './pages/About/News';
 import Album from './pages/About/Album';
+import ChurchFathers from './pages/About/ChurchFathers';
+import ChurchCouncil from './pages/About/ChurchCouncil';
 import Education from './pages/Services/Education';
 import Seniors from './pages/Services/Seniors';
 import Women from './pages/Services/Women';
 import Mass from './pages/Mass/Mass';
 import Schedule from './pages/Mass/Schedule';
 import Library from './pages/Library/Library';
+import Donations from './pages/Donations/Donations';
 import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header/Header';
 import Navigation from './components/Navigation/Navigation';
@@ -52,6 +55,8 @@ const App: React.FC = () => {
             <Route path="/about/history" element={<History />} />
             <Route path="/about/news" element={<NewsPage />} />
             <Route path="/about/album" element={<Album />} />
+            <Route path="/about/fathers" element={<ChurchFathers />} />
+            <Route path="/about/council" element={<ChurchCouncil />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/education" element={<Education />} />
             <Route path="/services/seniors" element={<Seniors />} />
@@ -59,6 +64,7 @@ const App: React.FC = () => {
             <Route path="/mass" element={<Mass />} />
             <Route path="/mass/schedule" element={<Schedule />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/donations" element={<Donations />} />
           </Routes>
         </MainContent>
         <Footer />

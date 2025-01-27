@@ -6,6 +6,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 const Nav = styled.nav`
   background: #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 1rem;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -35,6 +36,7 @@ const MenuButton = styled.button`
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 1001;
 
   @media (max-width: 768px) {
     display: block;
@@ -55,21 +57,22 @@ const NavMenu = styled.ul<NavMenuProps>`
   @media (max-width: 768px) {
     display: ${props => props.$isOpen ? 'flex' : 'none'};
     flex-direction: column;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
     right: 0;
     left: 0;
+    bottom: 0;
     background: #fff;
-    padding: 1.2rem 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    gap: 1rem;
+    padding: 5rem 1.5rem 1.5rem;
+    gap: 1.5rem;
     text-align: center;
+    overflow-y: auto;
+    z-index: 1000;
   }
 `;
 
 const NavItem = styled.li`
   position: relative;
-  padding: 0.8rem 0;
 
   &:hover .dropdown {
     display: block;
@@ -77,7 +80,14 @@ const NavItem = styled.li`
 
   @media (max-width: 768px) {
     width: 100%;
-    text-align: center;
+
+    &:hover .dropdown {
+      display: none;
+    }
+
+    &.active .dropdown {
+      display: block;
+    }
   }
 `;
 
@@ -88,6 +98,7 @@ const StyledNavLink = styled(NavLink)`
   font-size: 1.2rem;
   padding: 0.75rem;
   transition: color 0.3s ease;
+  display: block;
 
   &:hover {
     color: #8B0000;
@@ -98,7 +109,6 @@ const StyledNavLink = styled(NavLink)`
   }
 
   @media (max-width: 768px) {
-    display: block;
     padding: 0.75rem 0;
     font-size: 1.3rem;
   }
@@ -113,7 +123,7 @@ const Dropdown = styled.ul`
   background: #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   border-radius: 5px;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
   min-width: 250px;
   z-index: 1000;
 
@@ -122,8 +132,10 @@ const Dropdown = styled.ul`
     transform: none;
     box-shadow: none;
     padding: 0.5rem 0;
-    display: block;
+    margin-top: 0.5rem;
     min-width: 100%;
+    background: #f5f5f5;
+    border-radius: 0;
   }
 `;
 
@@ -148,68 +160,135 @@ const DropdownItem = styled.li`
     a {
       padding: 0.75rem 0;
       font-size: 1.2rem;
+      background: none;
+
+      &:hover {
+        background: none;
+      }
     }
   }
 `;
 
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+    if (!isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  };
+
+  const toggleDropdown = (menu: string) => {
+    if (window.innerWidth <= 768) {
+      setActiveDropdown(activeDropdown === menu ? null : menu);
+    }
   };
 
   return (
     <Nav>
       <Container>
-        <MenuButton onClick={toggleMenu}>
+        <MenuButton onClick={toggleMenu} aria-label="Toggle menu">
           {isOpen ? <FaTimes /> : <FaBars />}
         </MenuButton>
         <NavMenu $isOpen={isOpen}>
           <NavItem>
-            <StyledNavLink to="/">الرئيسية</StyledNavLink>
+            <StyledNavLink to="/" onClick={() => setIsOpen(false)}>
+              الرئيسية
+            </StyledNavLink>
           </NavItem>
-          <NavItem>
-            <StyledNavLink to="/about">عن كنيستنا</StyledNavLink>
+          <NavItem className={activeDropdown === 'about' ? 'active' : ''}>
+            <StyledNavLink 
+              to="/about" 
+              onClick={() => toggleDropdown('about')}
+            >
+              عن كنيستنا
+            </StyledNavLink>
             <Dropdown className="dropdown">
               <DropdownItem>
-                <StyledNavLink to="/about/stpaul">الأنبا بولا</StyledNavLink>
+                <StyledNavLink to="/about/stpaul" onClick={() => setIsOpen(false)}>
+                  الأنبا بولا
+                </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/about/history">تاريخ الكنيسة</StyledNavLink>
+                <StyledNavLink to="/about/history" onClick={() => setIsOpen(false)}>
+                  تاريخ الكنيسة
+                </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/about/news">الأخبار</StyledNavLink>
+                <StyledNavLink to="/about/fathers" onClick={() => setIsOpen(false)}>
+                  أباء الكنيسة
+                </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/about/album">ألبوم الصور</StyledNavLink>
+                <StyledNavLink to="/about/council" onClick={() => setIsOpen(false)}>
+                  مجلس الكنيسة
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/about/news" onClick={() => setIsOpen(false)}>
+                  الأخبار
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/about/album" onClick={() => setIsOpen(false)}>
+                  ألبوم الصور
+                </StyledNavLink>
+              </DropdownItem>
+            </Dropdown>
+          </NavItem>
+          <NavItem className={activeDropdown === 'services' ? 'active' : ''}>
+            <StyledNavLink 
+              to="/services"
+              onClick={() => toggleDropdown('services')}
+            >
+              الخدمات
+            </StyledNavLink>
+            <Dropdown className="dropdown">
+              <DropdownItem>
+                <StyledNavLink to="/services/education" onClick={() => setIsOpen(false)}>
+                  التربية الكنسية
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/seniors" onClick={() => setIsOpen(false)}>
+                  خدمة المسنين
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/women" onClick={() => setIsOpen(false)}>
+                  خدمة السيدات
+                </StyledNavLink>
+              </DropdownItem>
+            </Dropdown>
+          </NavItem>
+          <NavItem className={activeDropdown === 'mass' ? 'active' : ''}>
+            <StyledNavLink 
+              to="/mass"
+              onClick={() => toggleDropdown('mass')}
+            >
+              القداسات
+            </StyledNavLink>
+            <Dropdown className="dropdown">
+              <DropdownItem>
+                <StyledNavLink to="/mass/schedule" onClick={() => setIsOpen(false)}>
+                  مواعيد القداسات
+                </StyledNavLink>
               </DropdownItem>
             </Dropdown>
           </NavItem>
           <NavItem>
-            <StyledNavLink to="/mass">القداسات</StyledNavLink>
-            <Dropdown className="dropdown">
-              <DropdownItem>
-                <StyledNavLink to="/mass/schedule">مواعيد القداسات</StyledNavLink>
-              </DropdownItem>
-            </Dropdown>
+            <StyledNavLink to="/library" onClick={() => setIsOpen(false)}>
+              المكتبة
+            </StyledNavLink>
           </NavItem>
           <NavItem>
-            <StyledNavLink to="/services">الخدمات</StyledNavLink>
-            <Dropdown className="dropdown">
-              <DropdownItem>
-                <StyledNavLink to="/services/education">التربية الكنسية</StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/seniors">خدمة المسنين</StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/women">خدمة السيدات</StyledNavLink>
-              </DropdownItem>
-            </Dropdown>
-          </NavItem>
-          <NavItem>
-            <StyledNavLink to="/library">المكتبة</StyledNavLink>
+            <StyledNavLink to="/donations" onClick={() => setIsOpen(false)}>
+              التبرعات
+            </StyledNavLink>
           </NavItem>
         </NavMenu>
       </Container>

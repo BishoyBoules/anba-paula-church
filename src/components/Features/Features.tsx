@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaCross, FaBook, FaPray, FaChurch } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const FeaturesContainer = styled.section`
   padding: 4rem 1rem;
@@ -32,125 +31,234 @@ const Title = styled.h2`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
   padding: 0 1rem;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
     padding: 0;
   }
 `;
 
-const FeatureCard = styled(motion.div)`
-  background: #fff;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease;
+const GalleryCard = styled(motion.div)`
+  cursor: pointer;
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
   }
 
   @media (max-width: 768px) {
-    padding: 1.5rem;
+    border-radius: 10px;
   }
 `;
 
-const FeatureImage = styled.img`
+const GalleryImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 5px;
-  margin-bottom: 1rem;
+  transition: transform 0.5s ease;
+  display: block;
 `;
 
-const Icon = styled.div`
-  font-size: 2.5rem;
-  color: #8B0000;
-  margin-bottom: 1rem;
+const ImageOverlay = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(139,0,0,0.7));
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 
-  @media (max-width: 768px) {
-    font-size: 2rem;
+  ${GalleryCard}:hover & {
+    opacity: 1;
   }
 `;
 
-const FeatureTitle = styled.h3`
-  color: #333;
-  margin-bottom: 1rem;
+const ImageTitle = styled.h3`
+  color: white;
   font-size: 1.2rem;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 
   @media (max-width: 768px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 `;
 
-const FeatureDescription = styled.p`
-  color: #666;
-  line-height: 1.6;
-  font-size: 1rem;
+const Modal = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 2rem;
 
   @media (max-width: 768px) {
-    font-size: 0.9rem;
+    padding: 1rem;
+  }
+`;
+
+const ModalImage = styled(motion.img)`
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #8B0000;
+
+  &:hover {
+    background: #8B0000;
+    color: white;
+    transform: rotate(90deg);
+  }
+
+  @media (max-width: 768px) {
+    top: 1rem;
+    right: 1rem;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
   }
 `;
 
 const Features: React.FC = () => {
-  const features = [
-    {
-      icon: <FaCross />,
-      title: 'القداسات الإلهية',
-      description: 'نقيم القداسات الإلهية يومياً، ونقدم خدمة البث المباشر للقداسات',
-      image: '/img/kdasat.jpeg'
-    },
-    {
-      icon: <FaBook />,
-      title: 'التربية الكنسية',
-      description: 'دروس وفصول للأطفال والشباب لتعليم الإيمان المسيحي والتقاليد القبطية',
-      image: '/img/kudas/kudas1.jpg'
-    },
-    {
-      icon: <FaPray />,
-      title: 'الخدمات الروحية',
-      description: 'اجتماعات روحية للشباب والكبار، وخدمات المشورة الروحية',
-      image: '/img/pray.jpeg'
-    },
-    {
-      icon: <FaChurch />,
-      title: 'خدمات اجتماعية',
-      description: 'مساعدة المحتاجين وزيارة المرضى وخدمة كبار السن',
-      image: '/newImgs/Media2.jpeg'
-    }
+  const [selectedImage, setSelectedImage] = useState<{ src: string; title: string } | null>(null);
+
+  const galleryImages = [
+    { src: '/img/kdasat.jpeg', title: 'القداسات الإلهية' },
+    { src: '/img/pray.jpeg', title: 'الصلاة' },
+    { src: '/img/Album/11.jpeg', title: 'ألبوم الكنيسة' },
+    { src: '/img/Album/21.jpeg', title: 'فعاليات الكنيسة' },
+    { src: '/img/Album/31.jpeg', title: 'احتفالات' },
+    { src: '/img/Album/41.jpeg', title: 'الخدمات' },
+    { src: '/img/proc1.jpeg', title: 'مسيرة' },
+    { src: '/img/proc2.jpeg', title: 'مسيرة الكنيسة' },
+    { src: '/img/Album/51.jpeg', title: 'الأنشطة' },
+    { src: '/img/Album/61.jpeg', title: 'التجمعات' },
+    { src: '/img/proc3.jpeg', title: 'الاحتفالات' },
+    { src: '/img/Album/71.jpeg', title: 'العبادة' },
+    { src: '/img/Album/81.jpeg', title: 'الخدمة' },
+    { src: '/img/proc4.jpeg', title: 'مسيرة الإيمان' },
+    { src: '/img/proc5.jpeg', title: 'المسيرة' },
+    { src: '/img/Album/Comos 1.jpg', title: 'القموص' },
   ];
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
+
+  const modalVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 }
+  };
+
+  const imageVariants = {
+    hidden: { scale: 0.5, opacity: 0 },
+    visible: { 
+      scale: 1, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20
+      }
+    },
+    exit: { scale: 0.5, opacity: 0 }
   };
 
   return (
     <FeaturesContainer>
       <Container>
-        <Title>خدمات الكنيسة</Title>
+        <Title>Gallery</Title>
         <Grid>
-          {features.map((feature, index) => (
-            <FeatureCard
+          {galleryImages.map((image, index) => (
+            <GalleryCard
               key={index}
               variants={cardVariants}
               initial="hidden"
               animate="visible"
-              transition={{ delay: 0.1 * (index + 1) }}
+              transition={{ delay: 0.05 * index }}
+              onClick={() => setSelectedImage(image)}
+              whileHover={{ y: -8 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <FeatureImage src={feature.image} alt={feature.title} />
-              <Icon>{feature.icon}</Icon>
-              <FeatureTitle>{feature.title}</FeatureTitle>
-              <FeatureDescription>{feature.description}</FeatureDescription>
-            </FeatureCard>
+              <GalleryImage src={image.src} alt={image.title} />
+              <ImageOverlay>
+                <ImageTitle>{image.title}</ImageTitle>
+              </ImageOverlay>
+            </GalleryCard>
           ))}
         </Grid>
       </Container>
+
+      <AnimatePresence>
+        {selectedImage && (
+          <Modal
+            variants={modalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            onClick={() => setSelectedImage(null)}
+          >
+            <CloseButton onClick={() => setSelectedImage(null)}>
+              ×
+            </CloseButton>
+            <ModalImage
+              src={selectedImage.src}
+              alt={selectedImage.title}
+              variants={imageVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </Modal>
+        )}
+      </AnimatePresence>
     </FeaturesContainer>
   );
 };

@@ -5,8 +5,8 @@ import NewsSlider from '../components/NewsSlider/NewsSlider';
 const Home: React.FC = () => {
   return (
     <>
-      <Features />
       <NewsSlider />
+      <Features />
     </>
   );
 };

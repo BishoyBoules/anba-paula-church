@@ -37,8 +37,9 @@ const MenuButton = styled.button`
   top: 50%;
   transform: translateY(-50%);
   z-index: 1001;
-
+  
   @media (max-width: 768px) {
+    padding-top: 0.5rem;
     display: block;
   }
 `;
@@ -188,6 +189,12 @@ const Navigation: React.FC = () => {
     }
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+    setActiveDropdown(null);
+    document.body.style.overflow = 'unset';
+  };
+
   return (
     <Nav>
       <Container>
@@ -196,52 +203,52 @@ const Navigation: React.FC = () => {
         </MenuButton>
         <NavMenu $isOpen={isOpen}>
           <NavItem>
-            <StyledNavLink to="/" onClick={() => setIsOpen(false)}>
+            <StyledNavLink to="/" onClick={closeMenu}>
               الرئيسية
             </StyledNavLink>
           </NavItem>
           <NavItem className={activeDropdown === 'about' ? 'active' : ''}>
-            <StyledNavLink 
-              to="/about" 
+            <StyledNavLink
+              to="/about"
               onClick={() => toggleDropdown('about')}
             >
               عن كنيستنا
             </StyledNavLink>
             <Dropdown className="dropdown">
               <DropdownItem>
-                <StyledNavLink to="/about/stpaul" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/about/stpaul" onClick={closeMenu}>
                   الأنبا بولا
                 </StyledNavLink>
               </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/about/history" onClick={() => setIsOpen(false)}>
+              {/* <DropdownItem>
+                <StyledNavLink to="/about/history" onClick={closeMenu}>
                   تاريخ الكنيسة
                 </StyledNavLink>
-              </DropdownItem>
+              </DropdownItem> */}
               <DropdownItem>
-                <StyledNavLink to="/about/fathers" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/about/fathers" onClick={closeMenu}>
                   أباء الكنيسة
                 </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/about/council" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/about/council" onClick={closeMenu}>
                   مجلس الكنيسة
                 </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/about/news" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/about/news" onClick={closeMenu}>
                   الأخبار
                 </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/about/album" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/about/album" onClick={closeMenu}>
                   ألبوم الصور
                 </StyledNavLink>
               </DropdownItem>
             </Dropdown>
           </NavItem>
           <NavItem className={activeDropdown === 'services' ? 'active' : ''}>
-            <StyledNavLink 
+            <StyledNavLink
               to="/services"
               onClick={() => toggleDropdown('services')}
             >
@@ -249,24 +256,34 @@ const Navigation: React.FC = () => {
             </StyledNavLink>
             <Dropdown className="dropdown">
               <DropdownItem>
-                <StyledNavLink to="/services/education" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/services/education" onClick={closeMenu}>
                   التربية الكنسية
                 </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/services/seniors" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/services/kashafa" onClick={closeMenu}>
+                  خدمة الكشافة
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/abosefen" onClick={closeMenu}>
+                  خدمة ابو سيفين
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/seniors" onClick={closeMenu}>
                   خدمة المسنين
                 </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/services/women" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/services/women" onClick={closeMenu}>
                   خدمة السيدات
                 </StyledNavLink>
               </DropdownItem>
             </Dropdown>
           </NavItem>
           <NavItem className={activeDropdown === 'mass' ? 'active' : ''}>
-            <StyledNavLink 
+            <StyledNavLink
               to="/mass"
               onClick={() => toggleDropdown('mass')}
             >
@@ -274,19 +291,19 @@ const Navigation: React.FC = () => {
             </StyledNavLink>
             <Dropdown className="dropdown">
               <DropdownItem>
-                <StyledNavLink to="/mass/schedule" onClick={() => setIsOpen(false)}>
+                <StyledNavLink to="/mass/schedule" onClick={closeMenu}>
                   مواعيد القداسات
                 </StyledNavLink>
               </DropdownItem>
             </Dropdown>
           </NavItem>
-          <NavItem>
-            <StyledNavLink to="/library" onClick={() => setIsOpen(false)}>
+          {/* <NavItem>
+            <StyledNavLink to="/library" onClick={closeMenu}>
               المكتبة
             </StyledNavLink>
-          </NavItem>
+          </NavItem> */}
           <NavItem>
-            <StyledNavLink to="/donations" onClick={() => setIsOpen(false)}>
+            <StyledNavLink to="/donations" onClick={closeMenu}>
               التبرعات
             </StyledNavLink>
           </NavItem>

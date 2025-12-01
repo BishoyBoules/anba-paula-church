@@ -3,6 +3,91 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaHeart, FaHandHoldingHeart, FaPray, FaUsers } from 'react-icons/fa';
 
+
+const Banner = styled.div`
+  position: relative;
+  height: 400px;
+  margin-bottom: 4rem;
+  border-radius: 15px;
+  overflow: hidden;
+`;
+
+const BannerImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const BannerOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.7));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+`;
+
+const BannerTitle = styled.h2`
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+`;
+
+const BannerText = styled.p`
+  font-size: 1.2rem;
+  max-width: 600px;
+  line-height: 1.6;
+`;
+
+
+const EventsSection = styled.div`
+  margin-bottom: 4rem;
+`;
+
+const EventsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+
+const EventCard = styled(motion.div)`
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+`;
+
+const EventImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
+
+const EventContent = styled.div`
+  padding: 1.5rem;
+`;
+
+const EventTitle = styled.h3`
+  color: #8B0000;
+  margin-bottom: 1rem;
+`;
+
+const EventDate = styled.p`
+  color: #666;
+  margin-bottom: 0.5rem;
+`;
+
+const EventDescription = styled.p`
+  color: #333;
+  line-height: 1.6;
+`;
+
 const PageContainer = styled.div`
   padding: 4rem 0;
   direction: rtl;
@@ -170,21 +255,24 @@ const Seniors: React.FC = () => {
     }
   ];
 
-  const scheduleItems = [
+  const events = [
     {
-      day: 'الثلاثاء',
-      time: '١٠ صباحاً',
-      activity: 'اجتماع روحي'
+      title: 'مؤتمر السيدات السنوي',
+      date: '١٥-١٧ فبراير ٢٠٢٥',
+      image: '/img/women/conference.jpg',
+      description: 'مؤتمر روحي خاص بالسيدات يتناول موضوع "المرأة في الكتاب المقدس"'
     },
     {
-      day: 'الخميس',
-      time: '١١ صباحاً',
-      activity: 'قداس خاص'
+      title: 'ورشة عمل المهارات الأسرية',
+      date: '٢٥ فبراير ٢٠٢٥',
+      image: '/img/women/workshop.jpg',
+      description: 'ورشة عمل لتنمية المهارات الأسرية والتربوية'
     },
     {
-      day: 'السبت',
-      time: '٤ عصراً',
-      activity: 'لقاء اجتماعي'
+      title: 'يوم خدمة المجتمع',
+      date: '١٠ مارس ٢٠٢٥',
+      image: '/img/women/service.jpg',
+      description: 'يوم مخصص لخدمة المجتمع المحيط بالكنيسة'
     }
   ];
 
@@ -201,7 +289,7 @@ const Seniors: React.FC = () => {
           </HeroOverlay>
         </HeroSection>
 
-        <Title>خدماتنا</Title>
+        <Title>مواعيد الخدمة</Title>
         <ServicesGrid>
           {services.map((service, index) => (
             <ServiceCard
@@ -217,18 +305,47 @@ const Seniors: React.FC = () => {
           ))}
         </ServicesGrid>
 
-        <Schedule>
-          <ScheduleTitle>مواعيد الخدمة</ScheduleTitle>
-          <ScheduleGrid>
-            {scheduleItems.map((item, index) => (
-              <ScheduleItem key={index}>
-                <h4>{item.day}</h4>
-                <p>{item.time}</p>
-                <p>{item.activity}</p>
-              </ScheduleItem>
+        <EventsSection>
+          <Title>الأحداث القادمة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
             ))}
-          </ScheduleGrid>
-        </Schedule>
+          </EventsGrid>
+        </EventsSection>
+
+        <EventsSection>
+          <Title>أخبار عامة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
+            ))}
+          </EventsGrid>
+        </EventsSection>
 
         <ContactSection>
           <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>

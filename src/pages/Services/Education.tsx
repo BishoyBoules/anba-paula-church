@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const PageContainer = styled.div`
   padding: 4rem 0;
@@ -26,11 +27,27 @@ const Grid = styled.div`
   gap: 2rem;
 `;
 
+const CardLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+`;
+
 const Card = styled(motion.div)`
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
 `;
 
 const CardImage = styled.img`
@@ -69,29 +86,41 @@ const ScheduleItem = styled.div`
 const Education: React.FC = () => {
   const classes = [
     {
+      id: 'kindergarten',
       title: 'فصل حضانة',
       image: '/img/education/kindergarten.jpg',
       description: 'تعليم الأطفال من سن 3-5 سنوات أساسيات الإيمان المسيحي من خلال الألعاب والأنشطة',
       schedule: 'الجمعة 4-6 مساءً'
     },
     {
-      title: 'فصل ابتدائي',
+      id: 'primary-1-3',
+      title: 'فصل ابتدائي ١، ٢، ٣',
       image: '/img/education/primary.jpg',
-      description: 'دراسة الكتاب المقدس وحياة القديسين للأطفال من سن 6-12 سنة',
+      description: 'دراسة الكتاب المقدس وحياة القديسين للأطفال من سن 6-8 سنة',
       schedule: 'الجمعة 4-6 مساءً'
     },
     {
+      id: 'primary-4-6',
+      title: 'فصل ابتدائي ٤، ٥، ٦',
+      image: '/img/education/primary.jpg',
+      description: 'دراسة الكتاب المقدس وحياة القديسين للأطفال من سن 9-12 سنة',
+      schedule: 'الجمعة 4-6 مساءً'
+    },
+    {
+      id: 'middle',
       title: 'فصل إعدادي',
       image: '/img/education/middle.jpg',
       description: 'تعميق الفهم الروحي والعقائدي للمراهقين من سن 12-15 سنة',
       schedule: 'الجمعة 6-8 مساءً'
     },
     {
+      id: 'high',
       title: 'فصل ثانوي',
       image: '/img/education/high.jpg',
       description: 'مناقشة القضايا المعاصرة من منظور مسيحي للشباب من سن 15-18 سنة',
       schedule: 'الجمعة 6-8 مساءً'
-    }
+    },
+    
   ];
 
   return (
@@ -100,24 +129,25 @@ const Education: React.FC = () => {
         <Title>التربية الكنسية</Title>
         <Grid>
           {classes.map((classItem, index) => (
-            <Card
-              key={classItem.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <CardImage src={classItem.image} alt={classItem.title} />
-              <CardContent>
-                <CardTitle>{classItem.title}</CardTitle>
-                <CardText>{classItem.description}</CardText>
-                <Schedule>
-                  <ScheduleItem>
-                    <span>موعد الفصل:</span>
-                    <span>{classItem.schedule}</span>
-                  </ScheduleItem>
-                </Schedule>
-              </CardContent>
-            </Card>
+            <CardLink to={`/services/education/${classItem.id}`} key={classItem.id}>
+              <Card
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <CardImage src={classItem.image} alt={classItem.title} />
+                <CardContent>
+                  <CardTitle>{classItem.title}</CardTitle>
+                  <CardText>{classItem.description}</CardText>
+                  <Schedule>
+                    <ScheduleItem>
+                      <span>موعد الفصل:</span>
+                      <span>{classItem.schedule}</span>
+                    </ScheduleItem>
+                  </Schedule>
+                </CardContent>
+              </Card>
+            </CardLink>
           ))}
         </Grid>
       </Container>

@@ -216,7 +216,7 @@ const Women: React.FC = () => {
         <Banner>
           <BannerImage src="/img/women/banner.jpg" alt="خدمة السيدات" />
           <BannerOverlay>
-            <BannerTitle>خدمة السيدات</BannerTitle>
+            <BannerTitle>خدمة ابوبسفن</BannerTitle>
             <BannerText>
               نسعى لتمكين السيدات روحياً واجتماعياً من خلال برامج متنوعة تلبي احتياجاتهن
             </BannerText>
@@ -282,8 +282,8 @@ const Women: React.FC = () => {
         </EventsSection>
 
         <ContactSection>
-          <ContactTitle>هل تريدين المشاركة في الخدمة؟</ContactTitle>
-          <ContactButton>تواصلي معنا</ContactButton>
+          <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
+          <ContactButton>تواصل معنا</ContactButton>
         </ContactSection>
       </Container>
     </PageContainer>

@@ -108,23 +108,35 @@ const Donations: React.FC = () => {
       id: 1,
       icon: <FaHandHoldingHeart />,
       title: 'التبرع المباشر',
-      description: 'يمكنك التبرع مباشرة في الكنيسة من خلال مكتب السكرتارية',
-      details: 'متاح يومياً من 9 صباحاً حتى 5 مساءً'
+      description: 'يمكنك التبرع مباشرة في الكنيسة',
+      details: [
+        'متاح يومياً من 9 صباحاً حتى 5 مساءً'
+      ]
     },
     {
       id: 2,
       icon: <FaCreditCard />,
       title: 'التحويل البنكي',
       description: 'يمكنك التحويل مباشرة إلى حساب الكنيسة',
-      details: 'رقم الحساب: XXXX-XXXX-XXXX-XXXX'
+      details: [
+        'بالمصري: 1383070552561400018',
+        'بالدولار: 1383060552561400018',
+        'باليورو: 1383170552561401011',
+        'اسم البنك: البنك الأهلي',
+        'IBAN: EG170003013830705525614000180',
+        'اسم الحساب: كنيسة الأنبا بولا'
+      ]
     },
-    {
-      id: 3,
-      icon: <FaMoneyBillWave />,
-      title: 'التبرع الشهري',
-      description: 'اشترك في برنامج التبرع الشهري لدعم أنشطة الكنيسة',
-      details: 'تواصل مع مكتب الكنيسة للاشتراك'
-    }
+    // {
+    //   id: 3,
+    //   icon: <FaMoneyBillWave />,
+    //   title: 'التبرع الشهري',
+    //   description: 'اشترك في برنامج التبرع الشهري لدعم أنشطة الكنيسة',
+    //   details: [
+    //     'تواصل مع مكتب الكنيسة للاشتراك',
+    //     'الحد الأدنى: 100 جنيه شهرياً'
+    //   ]
+    // }
   ];
 
   return (
@@ -151,7 +163,9 @@ const Donations: React.FC = () => {
               <IconWrapper>{method.icon}</IconWrapper>
               <MethodTitle>{method.title}</MethodTitle>
               <MethodDescription>{method.description}</MethodDescription>
-              <AccountDetails>{method.details}</AccountDetails>
+              {method.details.map((detail, index) => (
+                <AccountDetails key={index}>{detail}</AccountDetails>
+              ))}
             </MethodCard>
           ))}
         </DonationMethodsGrid>

@@ -160,27 +160,23 @@ const Features: React.FC = () => {
 
   const galleryImages = [
     { src: '/img/kdasat.jpeg', title: 'القداسات الإلهية' },
-    { src: '/img/pray.jpeg', title: 'الصلاة' },
+    // { src: '/img/pray.jpeg', title: 'الصلاة' },
     { src: '/img/Album/11.jpeg', title: 'ألبوم الكنيسة' },
     { src: '/img/Album/21.jpeg', title: 'فعاليات الكنيسة' },
     { src: '/img/Album/31.jpeg', title: 'احتفالات' },
     { src: '/img/Album/41.jpeg', title: 'الخدمات' },
-    { src: '/img/proc1.jpeg', title: 'مسيرة' },
-    { src: '/img/proc2.jpeg', title: 'مسيرة الكنيسة' },
+    // { src: '/img/proc1.jpeg', title: 'مسيرة' },
+    // { src: '/img/proc2.jpeg', title: 'مسيرة الكنيسة' },
     { src: '/img/Album/51.jpeg', title: 'الأنشطة' },
-    { src: '/img/Album/61.jpeg', title: 'التجمعات' },
-    { src: '/img/proc3.jpeg', title: 'الاحتفالات' },
+    { src: '/img/Album/61.jpeg', title: 'رحلات' },
     { src: '/img/Album/71.jpeg', title: 'العبادة' },
-    { src: '/img/Album/81.jpeg', title: 'الخدمة' },
-    { src: '/img/proc4.jpeg', title: 'مسيرة الإيمان' },
-    { src: '/img/proc5.jpeg', title: 'المسيرة' },
-    { src: '/img/Album/Comos 1.jpg', title: 'القموص' },
+    { src: '/img/Album/Comos 1.jpg', title: 'الاباء' },
   ];
 
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
       transition: {
         type: "spring",
@@ -198,8 +194,8 @@ const Features: React.FC = () => {
 
   const imageVariants = {
     hidden: { scale: 0.5, opacity: 0 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
       transition: {
         type: "spring",
@@ -213,7 +209,7 @@ const Features: React.FC = () => {
   return (
     <FeaturesContainer>
       <Container>
-        <Title>Gallery</Title>
+        <Title>معرض الصور</Title>
         <Grid>
           {galleryImages.map((image, index) => (
             <GalleryCard

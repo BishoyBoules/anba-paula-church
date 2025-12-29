@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import ftAnton from '../../img/ft-anton.jpeg'
+import ftPhilo from '../../img/ft-philo.jpeg'
 
 const FathersSection = styled.section`
   padding: 4rem 0;
@@ -71,13 +73,13 @@ const Fathers: React.FC = () => {
       id: 1,
       name: 'القمص أنطونيوس منير',
       date: 'تاريخ الرسامة 6/1997',
-      image: '/img/Fathers/Antonios 32.jpeg'
+      image: ftAnton
     },
     {
       id: 2,
       name: 'القس فيلوباتير رمزي',
       date: 'تاريخ الرسامة 8/2002',
-      image: '/img/Fathers/Philopatir2.jpeg'
+      image: ftPhilo
     },
     {
       id: 3,

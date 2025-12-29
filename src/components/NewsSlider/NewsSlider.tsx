@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import massHome from '../../img/massHome.jpeg';
+import youth from '../../img/youth.jpg';
+import godBrother from '../../img/godBrother.jpeg';
 
 const SliderContainer = styled.section`
   padding: 4rem 1rem;
@@ -126,14 +129,14 @@ const newsItems: NewsItem[] = [
     title: 'القداس الإلهي الأسبوعي',
     date: '٢٦ يناير ٢٠٢٥',
     description: 'يقام القداس الإلهي كل يوم أحد الساعة ٨ صباحاً بكنيسة الأنبا بولا',
-    image: '/img/kudas/kudas1.jpg'
+    image: massHome
   },
   {
     id: 2,
     title: 'اجتماع الشباب',
     date: '٢٥ يناير ٢٠٢٥',
     description: 'اجتماع شباب الكنيسة كل يوم جمعة الساعة ٧ مساءً',
-    image: '/img/pray.jpeg'
+    image: youth
   },
   {
     id: 3,
@@ -144,10 +147,10 @@ const newsItems: NewsItem[] = [
   },
   {
     id: 4,
-    title: 'خدمة افتقاد المرضى',
+    title: 'خدمة اخوة الرب',
     date: '٢٣ يناير ٢٠٢٥',
-    description: 'زيارة المرضى وافتقادهم في المستشفيات والمنازل',
-    image: '/img/kdasat.jpeg'
+    description: '"صِرْتُ لِلضُّعَفَاءِ كَضَعِيفٍ لأَرْبَحَ الضُّعَفَاءَ. صِرْتُ لِلْكُلِّ كُلَّ شَيْءٍ، لأُخَلِّصَ عَلَى كُلِّ حَال قَوْمًا" (رسالة بولس الرسول الأولى إلى أهل كورنثوس ٩: ٢٢)',
+    image: godBrother
   }
 ];
 
@@ -158,10 +161,10 @@ const NewsSlider: React.FC = () => {
     if (containerRef.current) {
       const container = containerRef.current;
       const scrollAmount = 320; // card width + gap
-      const scrollLeft = direction === 'prev' 
-        ? container.scrollLeft - scrollAmount 
+      const scrollLeft = direction === 'prev'
+        ? container.scrollLeft - scrollAmount
         : container.scrollLeft + scrollAmount;
-      
+
       container.scrollTo({
         left: scrollLeft,
         behavior: 'smooth'

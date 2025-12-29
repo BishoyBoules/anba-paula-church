@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import ftAnton from '../../img/ft-anton.jpeg'
+import ftPhilo from '../../img/ft-philo.jpeg'
+import ftIbrahim from '../../img/ft-Ibrahim.jpeg'
+import ftArmia from '../../img/ft-Armia.jpeg'
 
 const PageContainer = styled.div`
   padding: 2rem;
@@ -79,46 +83,28 @@ const FatherName = styled.h3`
   font-size: 1.5rem;
 `;
 
-const FatherRole = styled.h4`
-  color: #666;
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-`;
-
-const FatherDescription = styled.p`
-  color: #333;
-  line-height: 1.6;
-`;
-
 const ChurchFathers: React.FC = () => {
   const fathers = [
     {
       id: 1,
-      name: 'نيافة الحبر الجليل الأنبا دانيال',
-      role: 'أسقف المعادي وسكرتير المجمع المقدس',
-      image: '/img/fathers/bishop-daniel.jpg',
-      description: 'نيافة الأنبا دانيال هو أسقف المعادي وسكرتير المجمع المقدس للكنيسة القبطية الأرثوذكسية.',
+      name: 'القمص إبراهيم توفيق',
+      image: ftIbrahim,
     },
     {
       id: 2,
-      name: 'القمص أغاثون الأنبا بولا',
-      role: 'كاهن كنيسة الأنبا بولا',
-      image: '/img/fathers/father-agathon.jpg',
-      description: 'القمص أغاثون الأنبا بولا هو كاهن كنيسة الأنبا بولا بأرض الجولف.',
+      name: 'القمص أنطونيوس منير',
+      image: ftAnton,
     },
     {
       id: 3,
-      name: 'القس بيشوي الأنبا بولا',
-      role: 'كاهن كنيسة الأنبا بولا',
-      image: '/img/fathers/father-bishoy.jpg',
-      description: 'القس بيشوي الأنبا بولا هو كاهن كنيسة الأنبا بولا بأرض الجولف.',
+      name: 'القس فيلوباتير رمزي',
+      image: ftPhilo,
     },
+
     {
       id: 4,
-      name: 'القس يوحنا الأنبا بولا',
-      role: 'كاهن كنيسة الأنبا بولا',
-      image: '/img/fathers/father-youhanna.jpg',
-      description: 'القس يوحنا الأنبا بولا هو كاهن كنيسة الأنبا بولا بأرض الجولف.',
+      name: 'القس أرميا حلمي',
+      image: ftArmia,
     }
   ];
 
@@ -145,8 +131,6 @@ const ChurchFathers: React.FC = () => {
             <FatherImage src={father.image} alt={father.name} />
             <FatherInfo>
               <FatherName>{father.name}</FatherName>
-              <FatherRole>{father.role}</FatherRole>
-              <FatherDescription>{father.description}</FatherDescription>
             </FatherInfo>
           </FatherCard>
         ))}

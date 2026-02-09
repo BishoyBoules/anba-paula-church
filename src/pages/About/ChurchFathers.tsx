@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase/config';
 import ftAnton from '../../img/ft-anton.jpeg'
 import ftPhilo from '../../img/ft-philo.jpeg'
 import ftIbrahim from '../../img/ft-Ibrahim.jpeg'
@@ -84,7 +86,7 @@ const FatherName = styled.h3`
 `;
 
 const ChurchFathers: React.FC = () => {
-  const fathers = [
+  const [fathers, setFathers] = React.useState([
     {
       id: 1,
       name: 'القمص إبراهيم توفيق',
@@ -100,13 +102,39 @@ const ChurchFathers: React.FC = () => {
       name: 'القس فيلوباتير رمزي',
       image: ftPhilo,
     },
-
     {
       id: 4,
       name: 'القس أرميا حلمي',
       image: ftArmia,
     }
-  ];
+  ]);
+
+  React.useEffect(() => {
+    fetchFathers();
+  }, []);
+
+  const fetchFathers = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'fathers'));
+      const fathersData: any[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        fathersData.push({
+          id: doc.id,
+          name: data.name,
+          image: data.image
+        });
+      });
+
+      // If there's data from Firebase, use it; otherwise use default
+      if (fathersData.length > 0) {
+        setFathers(fathersData);
+      }
+    } catch (error) {
+      console.error('Error fetching fathers:', error);
+      // Keep using default fathers on error
+    }
+  };
 
   return (
     <PageContainer>

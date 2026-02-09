@@ -131,8 +131,8 @@ const Footer: React.FC = () => {
               </ContactItem>
             </ContactInfo>
             <SocialLinks>
-              <SocialLink 
-                href="https://www.youtube.com/channel/UC4k_Tq45EqB6_VlLfO_Nh_A" 
+              <SocialLink
+                href="https://www.youtube.com/channel/UC4k_Tq45EqB6_VlLfO_Nh_A"
                 target="_blank"
                 aria-label="Visit our YouTube channel"
               >
@@ -157,10 +157,12 @@ const Footer: React.FC = () => {
           <Section>
             <h3>مواعيد الخدمة</h3>
             <QuickLinks>
-              <li>القداس الأول: 7:00 - 9:00 صباحاً</li>
-              <li>القداس الثاني: 9:30 - 11:30 صباحاً</li>
-              <li>اجتماع الشباب: الجمعة 7:00 مساءً</li>
-              <li>مدارس الأحد: الجمعة 4:00 عصراً</li>
+              <li><QuickLink to="/services/bible-study">درس الكتاب</QuickLink>: السبت 7:00 - 9:00 مساءاً</li>
+              <li><QuickLink to="/services/youth">اجتماع الشباب</QuickLink>: الخميس 7:30 - 9:30 مساءاً</li>
+              <li><QuickLink to="/services/education">مدارس الاحد</QuickLink>: الجمعة 10:00 - 1:00 صباحاً</li>
+              <li><QuickLink to="/services/kashafa">الكشافة</QuickLink>: الأربع 7:30 -9:30 مساءاً</li>
+              <li><QuickLink to="/services/abosefen">خدمة اخوة الرب</QuickLink>: الجمعة 7:30 - 9:30 مساءاً</li>
+              <li><QuickLink to="/services/women">خدمة سيدات</QuickLink>: الاثنين 6:00 - 8:00 مساءاً</li>
             </QuickLinks>
           </Section>
         </Grid>

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaBible, FaHeart, FaHandsHelping, FaGraduationCap } from 'react-icons/fa';
+import { FaCalendar } from 'react-icons/fa';
 
 const PageContainer = styled.div`
   padding: 4rem 0;
@@ -168,45 +168,30 @@ const ContactButton = styled.button`
 const Women: React.FC = () => {
   const services = [
     {
-      icon: <FaBible />,
-      title: 'دراسة الكتاب المقدس',
-      description: 'دراسة عميقة للكتاب المقدس وتطبيقاته في الحياة اليومية'
-    },
-    {
-      icon: <FaHeart />,
-      title: 'خدمة اجتماعية',
-      description: 'مساعدة المحتاجين وزيارة المرضى والمسنين'
-    },
-    {
-      icon: <FaHandsHelping />,
-      title: 'دعم نفسي',
-      description: 'جلسات إرشاد ودعم نفسي للسيدات'
-    },
-    {
-      icon: <FaGraduationCap />,
-      title: 'تنمية مهارات',
-      description: 'ورش عمل لتنمية المهارات الحياتية والمهنية'
+      icon: <FaCalendar />,
+      title: 'الجمعة 10:00 - 1:00 صباحاً',
+      description: 'حضانة و ١،٢،٣ و ٤،٥،٦ تحت رعاية قدس ابونا ارميا\n\nاعدادي وثانوي واجتماع شباب تحت رعاية قدس ابونا أنطونيوس'
     }
   ];
 
   const events = [
     {
-      title: 'مؤتمر السيدات السنوي',
-      date: '١٥-١٧ فبراير ٢٠٢٥',
-      image: '/img/women/conference.jpg',
-      description: 'مؤتمر روحي خاص بالسيدات يتناول موضوع "المرأة في الكتاب المقدس"'
+      title: '',
+      date: '',
+      image: '',
+      description: ''
     },
     {
-      title: 'ورشة عمل المهارات الأسرية',
-      date: '٢٥ فبراير ٢٠٢٥',
-      image: '/img/women/workshop.jpg',
-      description: 'ورشة عمل لتنمية المهارات الأسرية والتربوية'
+      title: '',
+      date: '',
+      image: '',
+      description: ''
     },
     {
-      title: 'يوم خدمة المجتمع',
-      date: '١٠ مارس ٢٠٢٥',
-      image: '/img/women/service.jpg',
-      description: 'يوم مخصص لخدمة المجتمع المحيط بالكنيسة'
+      title: '',
+      date: '',
+      image: '',
+      description: ''
     }
   ];
 
@@ -214,12 +199,9 @@ const Women: React.FC = () => {
     <PageContainer>
       <Container>
         <Banner>
-          <BannerImage src="/img/women/banner.jpg" alt="خدمة السيدات" />
+          <BannerImage src="/img/women/banner.jpg" alt="خدمة اخوة الرب" />
           <BannerOverlay>
-            <BannerTitle>خدمة ابوبسفن</BannerTitle>
-            <BannerText>
-              نسعى لتمكين السيدات روحياً واجتماعياً من خلال برامج متنوعة تلبي احتياجاتهن
-            </BannerText>
+            <BannerTitle>خدمة التربية الكنسية</BannerTitle>
           </BannerOverlay>
         </Banner>
 

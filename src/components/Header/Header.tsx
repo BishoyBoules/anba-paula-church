@@ -77,7 +77,8 @@ const Header: React.FC = () => {
         <Link to="/">
           <Logo src="/img/st paula logo mid.png" alt="كنيسة الأنبا بولا" />
         </Link>
-        <Title>كنيسة الأنبا بولا</Title>
+        <Title style={{ fontSize: '3rem' }}>كنيسة الأنبا بولا</Title>
+        <Title style={{ fontSize: '2rem' }}>بأرض الجولف</Title>
         <Quote>"من يهرب من الضيق يهرب من الله"</Quote>
       </Container>
     </HeaderContainer>

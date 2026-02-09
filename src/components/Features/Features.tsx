@@ -170,7 +170,7 @@ const Features: React.FC = () => {
     { src: '/img/Album/51.jpeg', title: 'الأنشطة' },
     { src: '/img/Album/61.jpeg', title: 'رحلات' },
     { src: '/img/Album/71.jpeg', title: 'العبادة' },
-    { src: '/img/Album/Comos 1.jpg', title: 'الاباء' },
+    { src: '/img/Album/81.jpeg', title: 'الاباء' },
   ];
 
   const cardVariants = {

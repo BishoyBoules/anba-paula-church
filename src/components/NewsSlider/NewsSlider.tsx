@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase/config';
 import massHome from '../../img/massHome.jpeg';
 import youth from '../../img/youth.jpg';
 import godBrother from '../../img/godBrother.jpeg';
@@ -147,15 +149,48 @@ const newsItems: NewsItem[] = [
   },
   {
     id: 4,
-    title: 'خدمة اخوة الرب',
+    title: 'خدمة ابو سيفين لاخوة الرب',
     date: '٢٣ يناير ٢٠٢٥',
-    description: '"صِرْتُ لِلضُّعَفَاءِ كَضَعِيفٍ لأَرْبَحَ الضُّعَفَاءَ. صِرْتُ لِلْكُلِّ كُلَّ شَيْءٍ، لأُخَلِّصَ عَلَى كُلِّ حَال قَوْمًا" (رسالة بولس الرسول الأولى إلى أهل كورنثوس ٩: ٢٢)',
+    description: '"صِرْتُ لِلضُّعَفَاءِ كَضَعِيفٍ لأَرْبَحَ الضُّعَفَاءَ. صِرْتُ لِلْكُلِّ كُلَّ شَيْءٍ، لأُخَلِّصَ عَلَى كُلِّ حَال قَوْمًا" (رسالة بولس الرسول الأولى إلى أهل كورنثوس ٩: ٢٢)',
     image: godBrother
   }
 ];
 
 const NewsSlider: React.FC = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const [news, setNews] = React.useState<NewsItem[]>(newsItems);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const fetchNews = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'news'));
+      const newsData: NewsItem[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        newsData.push({
+          id: parseInt(doc.id, 36), // Convert doc ID to number
+          title: data.title,
+          date: data.date,
+          description: data.description,
+          image: data.image
+        });
+      });
+
+      // If there's data from Firebase, use it; otherwise use default
+      if (newsData.length > 0) {
+        setNews(newsData);
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      // Keep using default news items on error
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const scroll = (direction: 'prev' | 'next') => {
     if (containerRef.current) {
@@ -180,7 +215,7 @@ const NewsSlider: React.FC = () => {
           ›
         </NavigationButton>
         <CardsContainer ref={containerRef}>
-          {newsItems.map((item) => (
+          {news.map((item) => (
             <NewsCard key={item.id}>
               <NewsImage src={item.image} alt={item.title} />
               <NewsTitle>{item.title}</NewsTitle>

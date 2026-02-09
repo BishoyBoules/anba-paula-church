@@ -9,6 +9,7 @@
     "@mui/material": "^6.4.1",
     "@types/react-router-dom": "^5.3.3",
     "cra-template-typescript": "1.2.0",
+    "firebase": "^10.7.1",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

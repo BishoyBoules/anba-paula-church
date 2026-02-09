@@ -165,12 +165,12 @@ const ContactButton = styled.button`
   }
 `;
 
-const Women: React.FC = () => {
+const BibleStudy: React.FC = () => {
   const services = [
     {
       icon: <FaCalendar />,
-      title: 'الاثنين 6:00 - 8:00 مساءاً',
-      description: 'تحت رعاية قدس ابونا ابراهيم'
+      title: 'السبت 7:00 - 9:00 مساءاً',
+      description: 'تحت رعاية قدس ابونا ارميا'
     }
   ];
 
@@ -201,10 +201,7 @@ const Women: React.FC = () => {
         <Banner>
           <BannerImage src="/img/women/banner.jpg" alt="خدمة السيدات" />
           <BannerOverlay>
-            <BannerTitle>خدمة السيدات</BannerTitle>
-            <BannerText>
-              نسعى لتمكين السيدات روحياً واجتماعياً من خلال برامج متنوعة تلبي احتياجاتهن
-            </BannerText>
+            <BannerTitle>اجتماع درس الكتاب المقدس</BannerTitle>
           </BannerOverlay>
         </Banner>
 
@@ -267,12 +264,12 @@ const Women: React.FC = () => {
         </EventsSection>
 
         <ContactSection>
-          <ContactTitle>هل تريدين المشاركة في الخدمة؟</ContactTitle>
-          <ContactButton>تواصلي معنا</ContactButton>
+          <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
+          <ContactButton>تواصل معنا</ContactButton>
         </ContactSection>
       </Container>
     </PageContainer>
   );
 };
 
-export default Women;
+export default BibleStudy;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaHeart, FaHandHoldingHeart, FaPray, FaUsers } from 'react-icons/fa';
+import { FaCalendar } from 'react-icons/fa';
 
 
 const Banner = styled.div`
@@ -234,45 +234,30 @@ const ContactButton = styled.button`
 const Seniors: React.FC = () => {
   const services = [
     {
-      icon: <FaHeart />,
-      title: 'رعاية روحية',
-      description: 'اجتماعات روحية وقداسات خاصة لكبار السن'
-    },
-    {
-      icon: <FaHandHoldingHeart />,
-      title: 'رعاية اجتماعية',
-      description: 'زيارات منزلية ومساعدات اجتماعية'
-    },
-    {
-      icon: <FaPray />,
-      title: 'صلوات وتأملات',
-      description: 'جلسات روحية وتأملات في الكتاب المقدس'
-    },
-    {
-      icon: <FaUsers />,
-      title: 'أنشطة ترفيهية',
-      description: 'رحلات ولقاءات اجتماعية'
+      icon: <FaCalendar />,
+      title: 'الأربع 7:30 -9:30 مساءاً',
+      description: 'تحت رعاية قدس ابونا ابراهيم'
     }
   ];
 
   const events = [
     {
-      title: 'مؤتمر السيدات السنوي',
-      date: '١٥-١٧ فبراير ٢٠٢٥',
-      image: '/img/women/conference.jpg',
-      description: 'مؤتمر روحي خاص بالسيدات يتناول موضوع "المرأة في الكتاب المقدس"'
+      title: '',
+      date: '',
+      image: '',
+      description: ''
     },
     {
-      title: 'ورشة عمل المهارات الأسرية',
-      date: '٢٥ فبراير ٢٠٢٥',
-      image: '/img/women/workshop.jpg',
-      description: 'ورشة عمل لتنمية المهارات الأسرية والتربوية'
+      title: '',
+      date: '',
+      image: '',
+      description: ''
     },
     {
-      title: 'يوم خدمة المجتمع',
-      date: '١٠ مارس ٢٠٢٥',
-      image: '/img/women/service.jpg',
-      description: 'يوم مخصص لخدمة المجتمع المحيط بالكنيسة'
+      title: '',
+      date: '',
+      image: '',
+      description: ''
     }
   ];
 

@@ -267,7 +267,7 @@ const Navigation: React.FC = () => {
               </DropdownItem>
               <DropdownItem>
                 <StyledNavLink to="/services/abosefen" onClick={closeMenu}>
-                  خدمة ابو سيفين
+                  خدمة اخوة الرب
                 </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
@@ -278,6 +278,21 @@ const Navigation: React.FC = () => {
               <DropdownItem>
                 <StyledNavLink to="/services/women" onClick={closeMenu}>
                   خدمة السيدات
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/youth" onClick={closeMenu}>
+                  اجتماع الشباب
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/women" onClick={closeMenu}>
+                  خدمة اعداد خدام
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/bible-study" onClick={closeMenu}>
+                  اجتماع درس الكتاب
                 </StyledNavLink>
               </DropdownItem>
             </Dropdown>

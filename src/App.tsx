@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import About from './pages/About/About';
 import Services from './pages/Services/Services';
@@ -24,6 +26,12 @@ import Footer from './components/Footer/Footer';
 import Kashafa from './pages/Services/Kashafa';
 import AboSefen from './pages/Services/AboSefen';
 import EducationDetail from './pages/Services/EducationDetail';
+import Login from './pages/Admin/Login';
+import Dashboard from './pages/Admin/Dashboard';
+import ManageNews from './pages/Admin/ManageNews';
+import ManageFathers from './pages/Admin/ManageFathers';
+import BibleStudy from './pages/Services/BibleStudy';
+import Youth from './pages/Services/Youth';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -45,37 +53,68 @@ const MainContent = styled.main`
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <GlobalStyle />
-      <AppContainer>
-        <Header />
-        <Navigation />
-        <MainContent>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/about/stpaul" element={<StPaul />} />
-            <Route path="/about/history" element={<History />} />
-            <Route path="/about/news" element={<NewsPage />} />
-            <Route path="/about/album" element={<Album />} />
-            <Route path="/about/fathers" element={<ChurchFathers />} />
-            <Route path="/about/council" element={<ChurchCouncil />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/education" element={<Education />} />
-            <Route path="/services/education/:classId" element={<EducationDetail />} />
-            <Route path="/services/seniors" element={<Seniors />} />
-            <Route path="/services/women" element={<Women />} />
-            <Route path="/services/kashafa" element={<Kashafa />} />
-            <Route path="/services/abosefen" element={<AboSefen />} />
-            <Route path="/mass" element={<Mass />} />
-            <Route path="/mass/schedule" element={<Schedule />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/donations" element={<Donations />} />
-          </Routes>
-        </MainContent>
-        <Footer />
-      </AppContainer>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <GlobalStyle />
+        <AppContainer>
+          <Header />
+          <Navigation />
+          <MainContent>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/about/stpaul" element={<StPaul />} />
+              <Route path="/about/history" element={<History />} />
+              <Route path="/about/news" element={<NewsPage />} />
+              <Route path="/about/album" element={<Album />} />
+              <Route path="/about/fathers" element={<ChurchFathers />} />
+              <Route path="/about/council" element={<ChurchCouncil />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/services/education" element={<Education />} />
+              <Route path="/services/education/:classId" element={<EducationDetail />} />
+              <Route path="/services/seniors" element={<Seniors />} />
+              <Route path="/services/women" element={<Women />} />
+              <Route path="/services/kashafa" element={<Kashafa />} />
+              <Route path="/services/abosefen" element={<AboSefen />} />
+              <Route path="/services/bible-study" element={<BibleStudy />} />
+              <Route path="/services/youth" element={<Youth />} />
+              <Route path="/mass" element={<Mass />} />
+              <Route path="/mass/schedule" element={<Schedule />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/donations" element={<Donations />} />
+
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<Login />} />
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/news"
+                element={
+                  <ProtectedRoute>
+                    <ManageNews />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/fathers"
+                element={
+                  <ProtectedRoute>
+                    <ManageFathers />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </MainContent>
+          <Footer />
+        </AppContainer>
+      </Router>
+    </AuthProvider>
   );
 };
 

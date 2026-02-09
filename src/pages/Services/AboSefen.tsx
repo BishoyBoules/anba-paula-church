@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaBible, FaHeart, FaHandsHelping, FaGraduationCap } from 'react-icons/fa';
+import { FaBible, FaCalendar } from 'react-icons/fa';
 
 const PageContainer = styled.div`
   padding: 4rem 0;
@@ -165,129 +165,111 @@ const ContactButton = styled.button`
   }
 `;
 
-const Women: React.FC = () => {
-    const services = [
-        {
-            icon: <FaBible />,
-            title: 'دراسة الكتاب المقدس',
-            description: 'دراسة عميقة للكتاب المقدس وتطبيقاته في الحياة اليومية'
-        },
-        {
-            icon: <FaHeart />,
-            title: 'خدمة اجتماعية',
-            description: 'مساعدة المحتاجين وزيارة المرضى والمسنين'
-        },
-        {
-            icon: <FaHandsHelping />,
-            title: 'دعم نفسي',
-            description: 'جلسات إرشاد ودعم نفسي للسيدات'
-        },
-        {
-            icon: <FaGraduationCap />,
-            title: 'تنمية مهارات',
-            description: 'ورش عمل لتنمية المهارات الحياتية والمهنية'
-        }
-    ];
+const AboSefen: React.FC = () => {
+  const services = [
+    {
+      icon: <FaCalendar />,
+      title: 'اجتماع اسبوعي يوم الجمعة من ٧:٣٠ مساءا حتى ٩:٣٠ مساءا',
+      description: 'تحت رعاية ابونا فيلوباتير'
+    }
+  ];
 
-    const events = [
-        {
-            title: 'مؤتمر السيدات السنوي',
-            date: '١٥-١٧ فبراير ٢٠٢٥',
-            image: '/img/women/conference.jpg',
-            description: 'مؤتمر روحي خاص بالسيدات يتناول موضوع "المرأة في الكتاب المقدس"'
-        },
-        {
-            title: 'ورشة عمل المهارات الأسرية',
-            date: '٢٥ فبراير ٢٠٢٥',
-            image: '/img/women/workshop.jpg',
-            description: 'ورشة عمل لتنمية المهارات الأسرية والتربوية'
-        },
-        {
-            title: 'يوم خدمة المجتمع',
-            date: '١٠ مارس ٢٠٢٥',
-            image: '/img/women/service.jpg',
-            description: 'يوم مخصص لخدمة المجتمع المحيط بالكنيسة'
-        }
-    ];
+  const events = [
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    },
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    },
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    }
+  ];
 
-    return (
-        <PageContainer>
-            <Container>
-                <Banner>
-                    <BannerImage src="/img/women/banner.jpg" alt="خدمة السيدات" />
-                    <BannerOverlay>
-                        <BannerTitle>خدمة ابوبسفن</BannerTitle>
-                        <BannerText>
-                            نسعى لتمكين السيدات روحياً واجتماعياً من خلال برامج متنوعة تلبي احتياجاتهن
-                        </BannerText>
-                    </BannerOverlay>
-                </Banner>
+  return (
+    <PageContainer>
+      <Container>
+        <Banner>
+          <BannerImage src="/img/abo-sefen.jpg" alt="خدمة اخوة الرب" />
+          <BannerOverlay>
+            <BannerTitle>خدمة ابو سيفين لاخوة الرب</BannerTitle>
+          </BannerOverlay>
+        </Banner>
 
-                <Title>مواعيد الخدمة</Title>
-                <ServicesGrid>
-                    {services.map((service, index) => (
-                        <ServiceCard
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                        >
-                            <ServiceIcon>{service.icon}</ServiceIcon>
-                            <ServiceTitle>{service.title}</ServiceTitle>
-                            <ServiceText>{service.description}</ServiceText>
-                        </ServiceCard>
-                    ))}
-                </ServicesGrid>
+        <Title>مواعيد الخدمة</Title>
+        <ServicesGrid>
+          {services.map((service, index) => (
+            <ServiceCard
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <ServiceIcon>{service.icon}</ServiceIcon>
+              <ServiceTitle>{service.title}</ServiceTitle>
+              <ServiceText>{service.description}</ServiceText>
+            </ServiceCard>
+          ))}
+        </ServicesGrid>
 
-                <EventsSection>
-                    <Title>الأحداث القادمة</Title>
-                    <EventsGrid>
-                        {events.map((event, index) => (
-                            <EventCard
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <EventImage src={event.image} alt={event.title} />
-                                <EventContent>
-                                    <EventTitle>{event.title}</EventTitle>
-                                    <EventDate>{event.date}</EventDate>
-                                    <EventDescription>{event.description}</EventDescription>
-                                </EventContent>
-                            </EventCard>
-                        ))}
-                    </EventsGrid>
-                </EventsSection>
+        <EventsSection>
+          <Title>الأحداث القادمة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
+            ))}
+          </EventsGrid>
+        </EventsSection>
 
-                <EventsSection>
-                    <Title>أخبار عامة</Title>
-                    <EventsGrid>
-                        {events.map((event, index) => (
-                            <EventCard
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <EventImage src={event.image} alt={event.title} />
-                                <EventContent>
-                                    <EventTitle>{event.title}</EventTitle>
-                                    <EventDate>{event.date}</EventDate>
-                                    <EventDescription>{event.description}</EventDescription>
-                                </EventContent>
-                            </EventCard>
-                        ))}
-                    </EventsGrid>
-                </EventsSection>
+        <EventsSection>
+          <Title>أخبار عامة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
+            ))}
+          </EventsGrid>
+        </EventsSection>
 
-                <ContactSection>
-                    <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
-                    <ContactButton>تواصل معنا</ContactButton>
-                </ContactSection>
-            </Container>
-        </PageContainer>
-    );
+        <ContactSection>
+          <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
+          <ContactButton>تواصل معنا</ContactButton>
+        </ContactSection>
+      </Container>
+    </PageContainer>
+  );
 };
 
-export default Women;
+export default AboSefen;

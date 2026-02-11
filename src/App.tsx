@@ -32,6 +32,7 @@ import ManageNews from './pages/Admin/ManageNews';
 import ManageFathers from './pages/Admin/ManageFathers';
 import BibleStudy from './pages/Services/BibleStudy';
 import Youth from './pages/Services/Youth';
+import Preparation from './pages/Services/Preparation';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -78,6 +79,7 @@ const App: React.FC = () => {
               <Route path="/services/abosefen" element={<AboSefen />} />
               <Route path="/services/bible-study" element={<BibleStudy />} />
               <Route path="/services/youth" element={<Youth />} />
+              <Route path="/services/preparation" element={<Preparation />} />
               <Route path="/mass" element={<Mass />} />
               <Route path="/mass/schedule" element={<Schedule />} />
               <Route path="/library" element={<Library />} />

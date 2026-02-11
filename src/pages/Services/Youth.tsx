@@ -166,110 +166,110 @@ const ContactButton = styled.button`
 `;
 
 const Youth: React.FC = () => {
-    const services = [
-        {
-            icon: <FaCalendar />,
-            title: 'الخميس 7:30 - 9:30 مساءاً',
-            description: 'تحت رعاية ابونا فيلوباتير'
-        }
-    ];
+  const services = [
+    {
+      icon: <FaCalendar />,
+      title: 'الخميس 7:30 - 9:30 مساءاً',
+      description: 'تحت رعاية ابونا انطونيوس'
+    }
+  ];
 
-    const events = [
-        {
-            title: '',
-            date: '',
-            image: '',
-            description: ''
-        },
-        {
-            title: '',
-            date: '',
-            image: '',
-            description: ''
-        },
-        {
-            title: '',
-            date: '',
-            image: '',
-            description: ''
-        }
-    ];
+  const events = [
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    },
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    },
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    }
+  ];
 
-    return (
-        <PageContainer>
-            <Container>
-                <Banner>
-                    <BannerImage src="/img/abo-sefen.jpg" alt="خدمة اخوة الرب" />
-                    <BannerOverlay>
-                        <BannerTitle>اجتماع الشباب</BannerTitle>
-                    </BannerOverlay>
-                </Banner>
+  return (
+    <PageContainer>
+      <Container>
+        <Banner>
+          <BannerImage src="/img/abo-sefen.jpg" alt="خدمة اخوة الرب" />
+          <BannerOverlay>
+            <BannerTitle>اجتماع الشباب</BannerTitle>
+          </BannerOverlay>
+        </Banner>
 
-                <Title>مواعيد الاجتماع</Title>
-                <ServicesGrid>
-                    {services.map((service, index) => (
-                        <ServiceCard
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                        >
-                            <ServiceIcon>{service.icon}</ServiceIcon>
-                            <ServiceTitle>{service.title}</ServiceTitle>
-                            <ServiceText>{service.description}</ServiceText>
-                        </ServiceCard>
-                    ))}
-                </ServicesGrid>
+        <Title>مواعيد الاجتماع</Title>
+        <ServicesGrid>
+          {services.map((service, index) => (
+            <ServiceCard
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <ServiceIcon>{service.icon}</ServiceIcon>
+              <ServiceTitle>{service.title}</ServiceTitle>
+              <ServiceText>{service.description}</ServiceText>
+            </ServiceCard>
+          ))}
+        </ServicesGrid>
 
-                <EventsSection>
-                    <Title>الأحداث القادمة</Title>
-                    <EventsGrid>
-                        {events.map((event, index) => (
-                            <EventCard
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <EventImage src={event.image} alt={event.title} />
-                                <EventContent>
-                                    <EventTitle>{event.title}</EventTitle>
-                                    <EventDate>{event.date}</EventDate>
-                                    <EventDescription>{event.description}</EventDescription>
-                                </EventContent>
-                            </EventCard>
-                        ))}
-                    </EventsGrid>
-                </EventsSection>
+        <EventsSection>
+          <Title>الأحداث القادمة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
+            ))}
+          </EventsGrid>
+        </EventsSection>
 
-                <EventsSection>
-                    <Title>أخبار عامة</Title>
-                    <EventsGrid>
-                        {events.map((event, index) => (
-                            <EventCard
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <EventImage src={event.image} alt={event.title} />
-                                <EventContent>
-                                    <EventTitle>{event.title}</EventTitle>
-                                    <EventDate>{event.date}</EventDate>
-                                    <EventDescription>{event.description}</EventDescription>
-                                </EventContent>
-                            </EventCard>
-                        ))}
-                    </EventsGrid>
-                </EventsSection>
+        <EventsSection>
+          <Title>أخبار عامة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
+            ))}
+          </EventsGrid>
+        </EventsSection>
 
-                <ContactSection>
-                    <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
-                    <ContactButton>تواصل معنا</ContactButton>
-                </ContactSection>
-            </Container>
-        </PageContainer>
-    );
+        <ContactSection>
+          <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
+          <ContactButton>تواصل معنا</ContactButton>
+        </ContactSection>
+      </Container>
+    </PageContainer>
+  );
 };
 
 export default Youth;

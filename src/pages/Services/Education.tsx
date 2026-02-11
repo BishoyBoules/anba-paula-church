@@ -87,40 +87,40 @@ const Education: React.FC = () => {
   const classes = [
     {
       id: 'kindergarten',
-      title: 'فصل حضانة',
+      title: 'خدمة حضانة',
       image: '/img/education/kindergarten.jpg',
-      description: 'تعليم الأطفال من سن 3-5 سنوات أساسيات الإيمان المسيحي من خلال الألعاب والأنشطة',
-      schedule: 'الجمعة 4-6 مساءً'
+      description: '',
+      schedule: ''
     },
     {
       id: 'primary-1-3',
-      title: 'فصل ابتدائي ١، ٢، ٣',
+      title: 'خدمة ابتدائي ١، ٢، ٣',
       image: '/img/education/primary.jpg',
-      description: 'دراسة الكتاب المقدس وحياة القديسين للأطفال من سن 6-8 سنة',
-      schedule: 'الجمعة 4-6 مساءً'
+      description: '',
+      schedule: ''
     },
     {
       id: 'primary-4-6',
-      title: 'فصل ابتدائي ٤، ٥، ٦',
+      title: 'خدمة ابتدائي ٤، ٥، ٦',
       image: '/img/education/primary.jpg',
-      description: 'دراسة الكتاب المقدس وحياة القديسين للأطفال من سن 9-12 سنة',
-      schedule: 'الجمعة 4-6 مساءً'
+      description: '',
+      schedule: ''
     },
     {
       id: 'middle',
-      title: 'فصل إعدادي',
+      title: 'خدمة إعدادي',
       image: '/img/education/middle.jpg',
-      description: 'تعميق الفهم الروحي والعقائدي للمراهقين من سن 12-15 سنة',
-      schedule: 'الجمعة 6-8 مساءً'
+      description: '',
+      schedule: ''
     },
     {
       id: 'high',
-      title: 'فصل ثانوي',
+      title: 'خدمة ثانوي',
       image: '/img/education/high.jpg',
-      description: 'مناقشة القضايا المعاصرة من منظور مسيحي للشباب من سن 15-18 سنة',
-      schedule: 'الجمعة 6-8 مساءً'
+      description: '',
+      schedule: ''
     },
-    
+
   ];
 
   return (
@@ -141,7 +141,7 @@ const Education: React.FC = () => {
                   <CardText>{classItem.description}</CardText>
                   <Schedule>
                     <ScheduleItem>
-                      <span>موعد الفصل:</span>
+                      <span>موعد الخدمة:</span>
                       <span>{classItem.schedule}</span>
                     </ScheduleItem>
                   </Schedule>

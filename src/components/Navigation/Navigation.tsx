@@ -286,7 +286,7 @@ const Navigation: React.FC = () => {
                 </StyledNavLink>
               </DropdownItem>
               <DropdownItem>
-                <StyledNavLink to="/services/women" onClick={closeMenu}>
+                <StyledNavLink to="/services/preparation" onClick={closeMenu}>
                   خدمة اعداد خدام
                 </StyledNavLink>
               </DropdownItem>
@@ -299,24 +299,11 @@ const Navigation: React.FC = () => {
           </NavItem>
           <NavItem className={activeDropdown === 'mass' ? 'active' : ''}>
             <StyledNavLink
-              to="/mass"
-              onClick={() => toggleDropdown('mass')}
+              to="/mass/schedule"
             >
               القداسات
             </StyledNavLink>
-            <Dropdown className="dropdown">
-              <DropdownItem>
-                <StyledNavLink to="/mass/schedule" onClick={closeMenu}>
-                  مواعيد القداسات
-                </StyledNavLink>
-              </DropdownItem>
-            </Dropdown>
           </NavItem>
-          {/* <NavItem>
-            <StyledNavLink to="/library" onClick={closeMenu}>
-              المكتبة
-            </StyledNavLink>
-          </NavItem> */}
           <NavItem>
             <StyledNavLink to="/donations" onClick={closeMenu}>
               التبرعات

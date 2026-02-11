@@ -159,7 +159,7 @@ const Features: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<{ src: string; title: string } | null>(null);
 
   const galleryImages = [
-    { src: '/img/kdasat.jpeg', title: 'القداسات الإلهية' },
+    // { src: '/img/kdasat.jpeg', title: 'القداسات الإلهية' },
     // { src: '/img/pray.jpeg', title: 'الصلاة' },
     { src: '/img/Album/11.jpeg', title: 'ألبوم الكنيسة' },
     { src: '/img/Album/21.jpeg', title: 'فعاليات الكنيسة' },

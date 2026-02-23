@@ -5,6 +5,7 @@ import { db } from '../../firebase/config';
 import massHome from '../../img/massHome.jpeg';
 import youth from '../../img/youth.jpg';
 import godBrother from '../../img/godBrother.jpeg';
+import madaresel7d from '../../img/madaresel7d.jpeg';
 
 const SliderContainer = styled.section`
   padding: 4rem 1rem;
@@ -159,7 +160,7 @@ const newsItems: NewsItem[] = [
     title: 'خدمة مدارس الاحد',
     date: '',
     description: 'خدمة مدارس الاحد كل يوم جمعة الساعة ١٠ صباحاً',
-    image: godBrother
+    image: madaresel7d
   }
 ];
 

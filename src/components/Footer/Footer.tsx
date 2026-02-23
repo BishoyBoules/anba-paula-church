@@ -119,16 +119,25 @@ const Footer: React.FC = () => {
             <ContactInfo>
               <ContactItem>
                 <FaMapMarkerAlt />
-                <span>أرض الجولف، القاهرة</span>
+                <a
+                  href="https://maps.app.goo.gl/n9ifZ77nuL23egoq6?g_st=aw"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'white', textDecoration: 'underline' }}
+                  aria-label="عرض الموقع على خرائط جوجل"
+                >
+                  الموقع
+                </a>
               </ContactItem>
               <ContactItem>
                 <FaPhone />
-                <span>+20 xxx xxx xxxx</span>
+                <span>0224146674</span>
+                <span>01012345678</span>
               </ContactItem>
-              <ContactItem>
+              {/* <ContactItem>
                 <FaEnvelope />
                 <span>info@anbapaulachurch.com</span>
-              </ContactItem>
+              </ContactItem> */}
             </ContactInfo>
             <SocialLinks>
               <SocialLink

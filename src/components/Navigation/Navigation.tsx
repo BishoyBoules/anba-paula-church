@@ -297,7 +297,7 @@ const Navigation: React.FC = () => {
               </DropdownItem>
             </Dropdown>
           </NavItem>
-          <NavItem className={activeDropdown === 'mass' ? 'active' : ''}>
+          <NavItem className={activeDropdown === 'mass' ? 'active' : ''} onClick={closeMenu}>
             <StyledNavLink
               to="/mass/schedule"
             >

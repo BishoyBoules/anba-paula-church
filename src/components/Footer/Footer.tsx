@@ -131,8 +131,8 @@ const Footer: React.FC = () => {
               </ContactItem>
               <ContactItem>
                 <FaPhone />
-                <span>0224146674</span>
-                <span>01012345678</span>
+                <a href="tel:0224146674" onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'} onMouseLeave={(e) => e.currentTarget.style.color = 'white'}>0224146674</a>
+                <a href="tel:0224181070" onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'} onMouseLeave={(e) => e.currentTarget.style.color = 'white'}>0224181070</a>
               </ContactItem>
               {/* <ContactItem>
                 <FaEnvelope />
@@ -179,6 +179,7 @@ const Footer: React.FC = () => {
         <Copyright>
           جميع الحقوق محفوظة © {new Date().getFullYear()} كنيسة الأنبا بولا - أرض الجولف
         </Copyright>
+        <p style={{ textAlign: 'center', color: '#888' }}>تصميم وتطوير بواسطة <a href="https://bishoy-boules.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Bishoy</a></p>
       </Container>
     </FooterContainer>
   );

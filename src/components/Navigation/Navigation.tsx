@@ -295,6 +295,16 @@ const Navigation: React.FC = () => {
                   اجتماع درس الكتاب
                 </StyledNavLink>
               </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/school" onClick={closeMenu}>
+                  مدرسة الشمامسة - ابتدائي
+                </StyledNavLink>
+              </DropdownItem>
+              <DropdownItem>
+                <StyledNavLink to="/services/random" onClick={closeMenu}>
+                  خدمة المناطق العشوائية
+                </StyledNavLink>
+              </DropdownItem>
             </Dropdown>
           </NavItem>
           <NavItem className={activeDropdown === 'mass' ? 'active' : ''} onClick={closeMenu}>

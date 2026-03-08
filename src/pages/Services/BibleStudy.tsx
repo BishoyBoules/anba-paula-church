@@ -169,8 +169,8 @@ const BibleStudy: React.FC = () => {
   const services = [
     {
       icon: <FaCalendar />,
-      title: 'السبت 7:00 - 9:00 مساءاً',
-      description: 'تحت رعاية قدس ابونا ارميا'
+      title: 'السبت 7:00 - 9:00 مساءًا',
+      description: 'تحت رعاية قدس ابونا إرميا'
     }
   ];
 

@@ -166,113 +166,113 @@ const ContactButton = styled.button`
 `;
 
 const Preparation: React.FC = () => {
-    const services = [
-        {
-            icon: <FaCalendar />,
-            title: 'الاثنين 6:00 - 8:00 مساءاً',
-            description: 'تحت رعاية قدس ابونا ابراهيم'
-        }
-    ];
+  const services = [
+    {
+      icon: <FaCalendar />,
+      title: 'الجمعة 11:00 صباحًا - 1:00 ظهرًا',
+      description: 'تحت رعاية قدس ابونا إرميا حلمي'
+    }
+  ];
 
-    const events = [
-        {
-            title: '',
-            date: '',
-            image: '',
-            description: ''
-        },
-        {
-            title: '',
-            date: '',
-            image: '',
-            description: ''
-        },
-        {
-            title: '',
-            date: '',
-            image: '',
-            description: ''
-        }
-    ];
+  const events = [
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    },
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    },
+    {
+      title: '',
+      date: '',
+      image: '',
+      description: ''
+    }
+  ];
 
-    return (
-        <PageContainer>
-            <Container>
-                <Banner>
-                    <BannerImage src="/img/women/banner.jpg" alt="خدمة اعداد خدام" />
-                    <BannerOverlay>
-                        <BannerTitle>خدمة اعداد خدام</BannerTitle>
-                        <BannerText>
-                            نسعى لتمكين الخدام روحياً واجتماعياً من خلال برامج متنوعة
-                        </BannerText>
-                    </BannerOverlay>
-                </Banner>
+  return (
+    <PageContainer>
+      <Container>
+        <Banner>
+          <BannerImage src="/img/women/banner.jpg" alt="خدمة اعداد خدام" />
+          <BannerOverlay>
+            <BannerTitle>خدمة اعداد خدام</BannerTitle>
+            <BannerText>
+              نسعى لتمكين الخدام روحياً واجتماعياً من خلال برامج متنوعة
+            </BannerText>
+          </BannerOverlay>
+        </Banner>
 
-                <Title>مواعيد الخدمة</Title>
-                <ServicesGrid>
-                    {services.map((service, index) => (
-                        <ServiceCard
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                        >
-                            <ServiceIcon>{service.icon}</ServiceIcon>
-                            <ServiceTitle>{service.title}</ServiceTitle>
-                            <ServiceText>{service.description}</ServiceText>
-                        </ServiceCard>
-                    ))}
-                </ServicesGrid>
+        <Title>مواعيد الخدمة</Title>
+        <ServicesGrid>
+          {services.map((service, index) => (
+            <ServiceCard
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <ServiceIcon>{service.icon}</ServiceIcon>
+              <ServiceTitle>{service.title}</ServiceTitle>
+              <ServiceText>{service.description}</ServiceText>
+            </ServiceCard>
+          ))}
+        </ServicesGrid>
 
-                <EventsSection>
-                    <Title>الأحداث القادمة</Title>
-                    <EventsGrid>
-                        {events.map((event, index) => (
-                            <EventCard
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <EventImage src={event.image} alt={event.title} />
-                                <EventContent>
-                                    <EventTitle>{event.title}</EventTitle>
-                                    <EventDate>{event.date}</EventDate>
-                                    <EventDescription>{event.description}</EventDescription>
-                                </EventContent>
-                            </EventCard>
-                        ))}
-                    </EventsGrid>
-                </EventsSection>
+        <EventsSection>
+          <Title>الأحداث القادمة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
+            ))}
+          </EventsGrid>
+        </EventsSection>
 
-                <EventsSection>
-                    <Title>أخبار عامة</Title>
-                    <EventsGrid>
-                        {events.map((event, index) => (
-                            <EventCard
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <EventImage src={event.image} alt={event.title} />
-                                <EventContent>
-                                    <EventTitle>{event.title}</EventTitle>
-                                    <EventDate>{event.date}</EventDate>
-                                    <EventDescription>{event.description}</EventDescription>
-                                </EventContent>
-                            </EventCard>
-                        ))}
-                    </EventsGrid>
-                </EventsSection>
+        <EventsSection>
+          <Title>أخبار عامة</Title>
+          <EventsGrid>
+            {events.map((event, index) => (
+              <EventCard
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <EventImage src={event.image} alt={event.title} />
+                <EventContent>
+                  <EventTitle>{event.title}</EventTitle>
+                  <EventDate>{event.date}</EventDate>
+                  <EventDescription>{event.description}</EventDescription>
+                </EventContent>
+              </EventCard>
+            ))}
+          </EventsGrid>
+        </EventsSection>
 
-                <ContactSection>
-                    <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
-                    <ContactButton>تواصل معنا</ContactButton>
-                </ContactSection>
-            </Container>
-        </PageContainer>
-    );
+        <ContactSection>
+          <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
+          <ContactButton>تواصل معنا</ContactButton>
+        </ContactSection>
+      </Container>
+    </PageContainer>
+  );
 };
 
 export default Preparation;

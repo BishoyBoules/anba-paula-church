@@ -159,19 +159,22 @@ const Footer: React.FC = () => {
               <li><QuickLink to="/">الصفحة الرئيسية</QuickLink></li>
               <li><QuickLink to="/about">عن كنيستنا</QuickLink></li>
               <li><QuickLink to="/services">خدمات الكنيسة</QuickLink></li>
-              <li><QuickLink to="/mass">القداسات</QuickLink></li>
+              <li><QuickLink to="/mass/schedule">القداسات</QuickLink></li>
             </QuickLinks>
           </Section>
 
           <Section>
             <h3>مواعيد الخدمة</h3>
             <QuickLinks>
-              <li><QuickLink to="/services/bible-study">درس الكتاب</QuickLink>: السبت 7:00 - 9:00 مساءاً</li>
-              <li><QuickLink to="/services/youth">اجتماع الشباب</QuickLink>: الخميس 7:30 - 9:30 مساءاً</li>
+              <li><QuickLink to="/services/bible-study">درس الكتاب</QuickLink>: السبت 7:00 - 9:00 مساءًا</li>
+              <li><QuickLink to="/services/youth">اجتماع الشباب</QuickLink>: الخميس 7:30 - 9:30 مساءًا</li>
               <li><QuickLink to="/services/education">مدارس الاحد</QuickLink>: الجمعة 10:00 - 1:00 صباحاً</li>
-              <li><QuickLink to="/services/kashafa">الكشافة</QuickLink>: الأربع 7:30 -9:30 مساءاً</li>
-              <li><QuickLink to="/services/abosefen">خدمة اخوة الرب</QuickLink>: الجمعة 7:30 - 9:30 مساءاً</li>
-              <li><QuickLink to="/services/women">خدمة سيدات</QuickLink>: الاثنين 6:00 - 8:00 مساءاً</li>
+              <li><QuickLink to="/services/kashafa">الكشافة</QuickLink>: الأربع 7:30 -9:30 مساءًا</li>
+              <li><QuickLink to="/services/abosefen">خدمة اخوة الرب</QuickLink>: الجمعة 7:30 - 9:30 مساءًا</li>
+              <li><QuickLink to="/services/preparation">خدمة اعداد خدام</QuickLink>: الجمعة 11:00 صباحًا - 1:00 ظهرًا</li>
+              <li><QuickLink to="/services/women">خدمة سيدات</QuickLink>: الاثنين 6:00 - 8:00 مساءًا</li>
+              <li><QuickLink to="/services/school">مدرسة الشمامسة - ابتدائي</QuickLink>: الجمعة 12:30 - 1:00 ظهرًا</li>
+              <li><QuickLink to="/services/random">خدمة المناطق العشوائية</QuickLink>: السبت التالت من كل شهر 9:30 صباحًا - 1:00 ظهرًا</li>
             </QuickLinks>
           </Section>
         </Grid>

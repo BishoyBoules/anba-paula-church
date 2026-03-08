@@ -235,7 +235,7 @@ const Seniors: React.FC = () => {
   const services = [
     {
       icon: <FaCalendar />,
-      title: 'الأربع 7:30 -9:30 مساءاً',
+      title: 'الأربع 7:30 -9:30 مساءًا',
       description: 'تحت رعاية قدس ابونا ابراهيم'
     }
   ];

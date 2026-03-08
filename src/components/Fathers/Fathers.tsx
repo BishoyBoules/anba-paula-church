@@ -83,7 +83,7 @@ const Fathers: React.FC = () => {
     },
     {
       id: 3,
-      name: 'القس أرميا حلمي',
+      name: 'القس إرميا حلمي',
       date: 'تاريخ الرسامة 3/2008',
       image: '/img/Fathers/Armia2.jpeg'
     }

@@ -169,8 +169,14 @@ const Women: React.FC = () => {
   const services = [
     {
       icon: <FaCalendar />,
-      title: 'الاثنين 6:00 - 8:00 مساءًا',
-      description: 'تحت رعاية قدس ابونا ابراهيم'
+      title: (
+        <>
+          السبت التالت من كل شهر الساعة 9:30 صباحًا الى 1 ظهرًا
+          <br />
+          والاجتماع يوم الاربعاء التالت من كل شهر من الساعة 6 الى 8 مساءًا
+        </>
+      ),
+      description: 'تحت رعاية قدس ابونا إرميا حلمي'
     }
   ];
 
@@ -199,12 +205,9 @@ const Women: React.FC = () => {
     <PageContainer>
       <Container>
         <Banner>
-          <BannerImage src="/img/women/banner.jpg" alt="خدمة السيدات" />
+          <BannerImage src="/img/women/banner.jpg" alt="خدمة المناطق العشوائية" />
           <BannerOverlay>
-            <BannerTitle>خدمة السيدات</BannerTitle>
-            <BannerText>
-              نسعى لتمكين السيدات روحياً واجتماعياً من خلال برامج متنوعة تلبي احتياجاتهن
-            </BannerText>
+            <BannerTitle>خدمة المناطق العشوائية</BannerTitle>
           </BannerOverlay>
         </Banner>
 
@@ -267,8 +270,8 @@ const Women: React.FC = () => {
         </EventsSection>
 
         <ContactSection>
-          <ContactTitle>هل تريدين المشاركة في الخدمة؟</ContactTitle>
-          <ContactButton>تواصلي معنا</ContactButton>
+          <ContactTitle>هل تريد المشاركة في الخدمة؟</ContactTitle>
+          <ContactButton>تواصل معنا</ContactButton>
         </ContactSection>
       </Container>
     </PageContainer>

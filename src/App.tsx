@@ -11,6 +11,7 @@ import History from './pages/About/History';
 import NewsPage from './pages/About/News';
 import Album from './pages/About/Album';
 import ChurchFathers from './pages/About/ChurchFathers';
+import FatherDetail from './pages/About/FatherDetail';
 import ChurchCouncil from './pages/About/ChurchCouncil';
 import Education from './pages/Services/Education';
 import Seniors from './pages/Services/Seniors';
@@ -30,9 +31,12 @@ import Login from './pages/Admin/Login';
 import Dashboard from './pages/Admin/Dashboard';
 import ManageNews from './pages/Admin/ManageNews';
 import ManageFathers from './pages/Admin/ManageFathers';
+import AdminFatherDetail from './pages/Admin/AdminFatherDetail';
 import BibleStudy from './pages/Services/BibleStudy';
 import Youth from './pages/Services/Youth';
 import Preparation from './pages/Services/Preparation';
+import School from './pages/Services/School';
+import Random from './pages/Services/Random';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -69,6 +73,7 @@ const App: React.FC = () => {
               <Route path="/about/news" element={<NewsPage />} />
               <Route path="/about/album" element={<Album />} />
               <Route path="/about/fathers" element={<ChurchFathers />} />
+              <Route path="/about/fathers/:id" element={<FatherDetail />} />
               <Route path="/about/council" element={<ChurchCouncil />} />
               <Route path="/services" element={<Services />} />
               <Route path="/services/education" element={<Education />} />
@@ -78,8 +83,10 @@ const App: React.FC = () => {
               <Route path="/services/kashafa" element={<Kashafa />} />
               <Route path="/services/abosefen" element={<AboSefen />} />
               <Route path="/services/bible-study" element={<BibleStudy />} />
+              <Route path="/services/random" element={<Random />} />
               <Route path="/services/youth" element={<Youth />} />
               <Route path="/services/preparation" element={<Preparation />} />
+              <Route path="/services/school" element={<School />} />
               <Route path="/mass" element={<Mass />} />
               <Route path="/mass/schedule" element={<Schedule />} />
               <Route path="/library" element={<Library />} />
@@ -108,6 +115,14 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <ManageFathers />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/fathers/:id"
+                element={
+                  <ProtectedRoute>
+                    <AdminFatherDetail />
                   </ProtectedRoute>
                 }
               />

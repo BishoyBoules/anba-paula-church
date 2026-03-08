@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { collection, getDocs } from 'firebase/firestore';
@@ -65,7 +66,15 @@ const FatherCard = styled(motion.div)`
 
   &:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
+`;
+
+const CardLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
 `;
 
 const FatherImage = styled.img`
@@ -88,23 +97,23 @@ const FatherName = styled.h3`
 const ChurchFathers: React.FC = () => {
   const [fathers, setFathers] = React.useState([
     {
-      id: 1,
+      id: '1',
       name: 'القمص إبراهيم توفيق',
       image: ftIbrahim,
     },
     {
-      id: 2,
+      id: '2',
       name: 'القمص أنطونيوس منير',
       image: ftAnton,
     },
     {
-      id: 3,
+      id: '3',
       name: 'القس فيلوباتير رمزي',
       image: ftPhilo,
     },
     {
-      id: 4,
-      name: 'القس أرميا حلمي',
+      id: '4',
+      name: 'القس إرميا حلمي',
       image: ftArmia,
     }
   ]);
@@ -156,10 +165,12 @@ const ChurchFathers: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <FatherImage src={father.image} alt={father.name} />
-            <FatherInfo>
-              <FatherName>{father.name}</FatherName>
-            </FatherInfo>
+            <CardLink to={`/about/fathers/${father.id}`}>
+              <FatherImage src={father.image} alt={father.name} />
+              <FatherInfo>
+                <FatherName>{father.name}</FatherName>
+              </FatherInfo>
+            </CardLink>
           </FatherCard>
         ))}
       </FathersGrid>

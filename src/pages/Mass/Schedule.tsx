@@ -74,24 +74,48 @@ const Note = styled.div`
   }
 `;
 
+const LiveSection = styled.div`
+  margin-top: 4rem;
+  text-align: center;
+`;
+
+const LiveTitle = styled.h2`
+  color: #8B0000;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+`;
+
+const LiveFrame = styled.div`
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const Schedule: React.FC = () => {
   const massSchedule = [
-    {
-      day: 'الأحد',
-      times: [
-        { time: '6:00 - 8:00 صباحاً', description: 'القداس الأول' },
-        { time: '8:00 - 10:00 صباحاً', description: 'القداس الثاني' }
-      ]
-    },
     {
       day: 'الجمعة',
       times: [
         { time: '6:00 - 8:00 صباحاً', description: 'القداس الأول' },
-        { time: '8:00 - 10:00 صباحاً', description: 'القداس الثاني' }
+        { time: '8:00 - 10:00 صباحاً', description: 'القداس الثاني' },
+        { time: '12:00 - 2:00 ظهراً', description: 'القداس الثالث' }
       ]
     },
     {
-      day: 'السبت',
+      day: 'السبت والأحد',
       times: [
         { time: '6:00 - 8:00 صباحاً', description: 'القداس الأول' },
         { time: '8:00 - 10:00 صباحاً', description: 'القداس الثاني' }
@@ -100,7 +124,8 @@ const Schedule: React.FC = () => {
     {
       day: 'الاتنين الي الخميس',
       times: [
-        { time: '6:00 - 8:00 صباحاً', description: '' }
+        { time: '9:00 - 12:00 صباحاً', description: 'القداس الأول' },
+        { time: '12:00 - 2:00 ظهراً', description: 'القداس الثاني' }
       ]
     }
   ];
@@ -108,7 +133,7 @@ const Schedule: React.FC = () => {
   return (
     <PageContainer>
       <Container>
-        <Title>مواعيد القداسات</Title>
+        <Title>مواعيد القداسات في ايام الصوم الكبير</Title>
         <ScheduleContainer>
           {massSchedule.map((day, index) => (
             <DayCard
@@ -131,6 +156,18 @@ const Schedule: React.FC = () => {
           <p>* في الأعياد والمناسبات الخاصة قد تتغير المواعيد. يرجى متابعة إعلانات الكنيسة.</p>
         </Note>
       </Container>
+      <LiveSection>
+        <LiveTitle>البث المباشر للقداس</LiveTitle>
+        <LiveFrame>
+          <iframe
+            src="https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID"
+            title="بث مباشر للقداس"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </LiveFrame>
+      </LiveSection>
     </PageContainer>
   );
 };

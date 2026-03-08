@@ -81,10 +81,19 @@ const FatherCard = styled.div`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
+`;
+
+const CardLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
 `;
 
 const FatherImage = styled.img`
@@ -110,6 +119,8 @@ const Actions = styled.div`
   justify-content: center;
   padding: 1rem;
   border-top: 1px solid #eee;
+  position: relative;
+  z-index: 10;
 `;
 
 const ActionButton = styled.button<{ variant?: 'edit' | 'delete' }>`
@@ -324,6 +335,7 @@ const ManageFathers: React.FC = () => {
         setShowModal(true);
     };
 
+
     return (
         <Container>
             <Header>
@@ -343,10 +355,12 @@ const ManageFathers: React.FC = () => {
             <FathersGrid>
                 {fathers.map((father) => (
                     <FatherCard key={father.id}>
-                        <FatherImage src={father.image} alt={father.name} />
-                        <FatherInfo>
-                            <FatherName>{father.name}</FatherName>
-                        </FatherInfo>
+                        <CardLink to={`/admin/fathers/${father.id}`}>
+                            <FatherImage src={father.image} alt={father.name} />
+                            <FatherInfo>
+                                <FatherName>{father.name}</FatherName>
+                            </FatherInfo>
+                        </CardLink>
                         <Actions>
                             <ActionButton variant="edit" onClick={() => handleEdit(father)}>
                                 <FaEdit />

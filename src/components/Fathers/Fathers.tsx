@@ -77,7 +77,7 @@ const Fathers: React.FC = () => {
     },
     {
       id: 2,
-      name: 'القس فيلوباتير رمزي',
+      name: 'القمص فيلوباتير رمزي',
       date: 'تاريخ الرسامة 8/2002',
       image: ftPhilo
     },

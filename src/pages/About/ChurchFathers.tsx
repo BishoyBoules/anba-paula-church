@@ -108,7 +108,7 @@ const ChurchFathers: React.FC = () => {
     },
     {
       id: '3',
-      name: 'القس فيلوباتير رمزي',
+      name: 'القمص فيلوباتير رمزي',
       image: ftPhilo,
     },
     {

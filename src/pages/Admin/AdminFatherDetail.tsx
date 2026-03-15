@@ -251,7 +251,7 @@ const initialFathersData: FatherType[] = [
     },
     {
         id: '3',
-        name: 'القس فيلوباتير رمزي',
+        name: 'القمص فيلوباتير رمزي',
         image: ftPhilo,
         confessionTimes: [
             { day: 'الأربعاء', time: '6:00 - 8:00 م', location: 'الكنيسة' },

@@ -100,13 +100,13 @@ const Services: React.FC = () => {
       link: '/services/bible-study',
       icon: '📖'
     },
-    {
-      id: 6,
-      title: 'خدمة المسنين',
-      description: 'رعاية وخدمة كبار السن في المجتمع',
-      link: '/services/seniors',
-      icon: '🤝'
-    }
+    // {
+    //   id: 6,
+    //   title: 'خدمة المسنين',
+    //   description: 'رعاية وخدمة كبار السن في المجتمع',
+    //   link: '/services/seniors',
+    //   icon: '🤝'
+    // }
   ];
 
   const cardVariants = {

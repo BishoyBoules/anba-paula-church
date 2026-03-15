@@ -173,9 +173,9 @@ const Women: React.FC = () => {
                 <>
                     الجمعة 12:30 - 1:00 ظهرًا
                     <br />
-                    <span style={{ fontSize: '15px' }}> ١ ل ٣ ابتدائي فصل أ.جون عريان</span>
+                    <span style={{ fontSize: '15px' }}> ١ ل ٣ ابتدائي فصل أ.فايز خيري</span>
                     <br />
-                    <span style={{ fontSize: '15px' }}> ٤ ل ٦ ابتدئي فصل أ.فايز خيري</span>
+                    <span style={{ fontSize: '15px' }}> ٤ ل ٦ ابتدئي فصل أ.جون عريان</span>
                 </>
             ),
             description: 'تحت رعاية قدس ابونا إرميا حلمي'

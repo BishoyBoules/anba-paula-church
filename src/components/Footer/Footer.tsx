@@ -85,7 +85,7 @@ const QuickLinks = styled.ul`
   gap: 0.5rem;
 `;
 
-const QuickLink = styled(Link)`
+const QuickLinkStyled = styled(Link)`
   color: white;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -94,6 +94,18 @@ const QuickLink = styled(Link)`
     color: #D4AF37;
   }
 `;
+
+const QuickLink: React.FC<{ to: string; children: React.ReactNode }> = ({ to, children }) => {
+  const handleClick = () => {
+    window.scrollTo(0, 0);
+  };
+
+  return (
+    <QuickLinkStyled to={to} onClick={handleClick}>
+      {children}
+    </QuickLinkStyled>
+  );
+};
 
 const Copyright = styled.div`
   text-align: center;
@@ -166,7 +178,7 @@ const Footer: React.FC = () => {
           <Section>
             <h3>مواعيد الخدمة</h3>
             <QuickLinks>
-              <li><QuickLink to="/services/bible-study">درس الكتاب</QuickLink>: السبت 7:00 - 9:00 مساءًا</li>
+              <li><QuickLink to="/services/bible-study">درس الكتاب</QuickLink>: السبت 7:00 - 8:00 مساءًا</li>
               <li><QuickLink to="/services/youth">اجتماع الشباب</QuickLink>: الخميس 7:30 - 9:30 مساءًا</li>
               <li><QuickLink to="/services/education">مدارس الاحد</QuickLink>: الجمعة 10:00 - 1:00 صباحاً</li>
               <li><QuickLink to="/services/kashafa">الكشافة</QuickLink>: الأربع 7:30 -9:30 مساءًا</li>

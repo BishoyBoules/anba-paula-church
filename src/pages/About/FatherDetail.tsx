@@ -11,6 +11,12 @@ const PageContainer = styled.div`
   padding: 2rem;
   direction: rtl;
   min-height: 80vh;
+  overflow-x: hidden;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const BackButton = styled(Link)`
@@ -33,6 +39,11 @@ const BackButton = styled(Link)`
 const ContentWrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: hidden;
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const HeaderSection = styled.div`
@@ -49,13 +60,32 @@ const FatherImage = styled.img`
   display: block;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   border: 5px solid #8B0000;
+
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 200px;
+    margin: 1rem auto;
+    border: 3px solid #8B0000;
+  }
 `;
 
 const TablesSection = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    gap: 1rem;
+  }
 `;
 
 const FatherName = styled.h1`
@@ -63,6 +93,14 @@ const FatherName = styled.h1`
   font-size: 3rem;
   margin-bottom: 1rem;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const TableCard = styled.div`
@@ -71,6 +109,16 @@ const TableCard = styled.div`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   border-top: 4px solid #8B0000;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
 `;
 
 const TableTitle = styled.h3`
@@ -78,11 +126,57 @@ const TableTitle = styled.h3`
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+`;
+
+const TableWrapper = styled.div`
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
+  padding: 0;
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #8B0000;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: #660000;
+  }
+
+  @media (max-width: 768px) {
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+  }
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
+  
+  @media (max-width: 768px) {
+    min-width: 500px;
+  }
 `;
 
 const TableHeader = styled.th`
@@ -91,6 +185,12 @@ const TableHeader = styled.th`
   padding: 1rem;
   text-align: right;
   font-size: 1.1rem;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.95rem;
+  }
 `;
 
 const TableRow = styled.tr`
@@ -106,6 +206,11 @@ const TableCell = styled.td`
   text-align: right;
   color: #333;
   font-size: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
 `;
 
 const EmptyMessage = styled.div`
@@ -216,6 +321,7 @@ const localFathersData: FatherType[] = [
             { day: 'السبت', time: '6:00 م - 7:00 م', location: 'كنيسة البابا كيرلس', type: 'عشية' },
             { day: 'السبت', time: '7:00 م - 8:00 م', location: 'كنيسة البابا كيرلس', type: 'درس كتاب' },
             { day: 'السبت التالت من كل شهر', time: '9:30 صباحًا - 1:00 ظهرًا', location: 'كنيسة البابا كيرلس', type: 'خدمة مناطق عشوائية' },
+            { day: 'الاربع التالت من كل شهر', time: '6:00 م - 8:00 م', location: 'كنيسة البابا كيرلس', type: 'اجتماع خدمة مناطق عشوائية' }
         ],
         availability: [
             'اعداد خدام',
@@ -295,20 +401,22 @@ const FatherDetail: React.FC = () => {
                     <TableCard>
                         <TableTitle>الخدمات</TableTitle>
                         {father.availability && father.availability.length > 0 ? (
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <TableHeader>الخدمة</TableHeader>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {father.availability.map((item, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>{item}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </tbody>
-                            </Table>
+                            <TableWrapper>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <TableHeader>الخدمة</TableHeader>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {father.availability.map((item, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>{item}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </TableWrapper>
                         ) : (
                             <EmptyMessage>لا توجد أوقات محددة</EmptyMessage>
                         )}
@@ -317,26 +425,28 @@ const FatherDetail: React.FC = () => {
                     <TableCard>
                         <TableTitle>الاجتماعات</TableTitle>
                         {father.meetings && father.meetings.length > 0 ? (
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <TableHeader>اجتماع</TableHeader>
-                                        <TableHeader>اليوم</TableHeader>
-                                        <TableHeader>الوقت</TableHeader>
-                                        <TableHeader>المكان</TableHeader>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {father.meetings.map((item, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>{item.type || '-'}</TableCell>
-                                            <TableCell>{item.day}</TableCell>
-                                            <TableCell>{item.time}</TableCell>
-                                            <TableCell>{item.location || '-'}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </tbody>
-                            </Table>
+                            <TableWrapper>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <TableHeader>اجتماع</TableHeader>
+                                            <TableHeader>اليوم</TableHeader>
+                                            <TableHeader>الوقت</TableHeader>
+                                            <TableHeader>المكان</TableHeader>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {father.meetings.map((item, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>{item.type || '-'}</TableCell>
+                                                <TableCell>{item.day}</TableCell>
+                                                <TableCell>{item.time}</TableCell>
+                                                <TableCell>{item.location || '-'}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </TableWrapper>
                         ) : (
                             <EmptyMessage>لا توجد اجتماعات محددة</EmptyMessage>
                         )}
@@ -345,24 +455,26 @@ const FatherDetail: React.FC = () => {
                     <TableCard>
                         <TableTitle>مواعيد الاعتراف</TableTitle>
                         {father.confessionTimes && father.confessionTimes.length > 0 ? (
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <TableHeader>اليوم</TableHeader>
-                                        <TableHeader>الوقت</TableHeader>
-                                        <TableHeader>المكان</TableHeader>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {father.confessionTimes.map((item, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>{item.day}</TableCell>
-                                            <TableCell>{item.time}</TableCell>
-                                            <TableCell>{item.location || '-'}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </tbody>
-                            </Table>
+                            <TableWrapper>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <TableHeader>اليوم</TableHeader>
+                                            <TableHeader>الوقت</TableHeader>
+                                            <TableHeader>المكان</TableHeader>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {father.confessionTimes.map((item, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>{item.day}</TableCell>
+                                                <TableCell>{item.time}</TableCell>
+                                                <TableCell>{item.location || '-'}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </tbody>
+                                </Table>
+                            </TableWrapper>
                         ) : (
                             <EmptyMessage>لا توجد مواعيد محددة</EmptyMessage>
                         )}

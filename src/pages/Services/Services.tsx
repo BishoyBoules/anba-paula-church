@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
@@ -29,6 +30,19 @@ const ServiceCard = styled(motion.div)`
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+const ServiceLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  display: block;
 `;
 
 const ServiceIcon = styled.div`
@@ -48,11 +62,6 @@ const ServiceDescription = styled.p`
   line-height: 1.6;
 `;
 
-const ServiceTime = styled.p`
-  color: #666;
-  margin-top: 1rem;
-  font-style: italic;
-`;
 
 const Services: React.FC = () => {
   const services = [
@@ -60,42 +69,42 @@ const Services: React.FC = () => {
       id: 1,
       title: 'القداس الإلهي',
       description: 'قداس أسبوعي يقام كل يوم أحد',
-      time: 'كل يوم أحد - ٨ صباحاً',
+      link: '/mass/schedule',
       icon: '🕊️'
     },
     {
       id: 2,
       title: 'مدارس الأحد',
       description: 'تعليم الأطفال والشباب مبادئ الإيمان المسيحي',
-      time: 'كل يوم جمعة - ٤ عصراً',
+      link: '/services/education',
       icon: '📚'
     },
     {
       id: 3,
       title: 'اجتماع الشباب',
       description: 'لقاء أسبوعي للشباب للدراسة والتأمل في الكتاب المقدس',
-      time: 'كل يوم جمعة - ٧ مساءً',
+      link: '/services/youth',
       icon: '👥'
     },
     {
       id: 4,
-      title: 'خدمة افتقاد المرضى',
-      description: 'زيارة المرضى في المستشفيات والمنازل',
-      time: 'حسب الحاجة',
+      title: 'خدمة ابو سيفين لاخوة الرب',
+      description: 'الاهتمام باخوة الرب وتقديم المساعدة لهم',
+      link: '/services/abosefen',
       icon: '🏥'
     },
     {
       id: 5,
       title: 'درس الكتاب',
       description: 'دراسة وتأمل في الكتاب المقدس',
-      time: 'كل يوم أربعاء - ٧ مساءً',
+      link: '/services/bible-study',
       icon: '📖'
     },
     {
       id: 6,
       title: 'خدمة المسنين',
       description: 'رعاية وخدمة كبار السن في المجتمع',
-      time: 'أسبوعياً',
+      link: '/services/seniors',
       icon: '🤝'
     }
   ];
@@ -110,18 +119,18 @@ const Services: React.FC = () => {
       <Title>الخدمات</Title>
       <ServicesGrid>
         {services.map((service, index) => (
-          <ServiceCard
-            key={service.id}
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: index * 0.1 }}
-          >
-            <ServiceIcon>{service.icon}</ServiceIcon>
-            <ServiceTitle>{service.title}</ServiceTitle>
-            <ServiceDescription>{service.description}</ServiceDescription>
-            <ServiceTime>{service.time}</ServiceTime>
-          </ServiceCard>
+          <ServiceLink key={service.id} to={service.link} onClick={() => window.scrollTo(0, 0)}>
+            <ServiceCard
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: index * 0.1 }}
+            >
+              <ServiceIcon>{service.icon}</ServiceIcon>
+              <ServiceTitle>{service.title}</ServiceTitle>
+              <ServiceDescription>{service.description}</ServiceDescription>
+            </ServiceCard>
+          </ServiceLink>
         ))}
       </ServicesGrid>
     </ServicesContainer>

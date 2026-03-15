@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/config';
@@ -50,14 +50,16 @@ const CardsContainer = styled.div`
 
 const NewsCard = styled.div`
   flex: 0 0 300px;
-  padding: 1.5rem;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
 
   &:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 
   @media (max-width: 768px) {
@@ -69,25 +71,126 @@ const NewsImage = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
-  border-radius: 5px;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 `;
 
 const NewsTitle = styled.h3`
   color: #3f0101;
-  margin-bottom: 1rem;
+  margin: 0;
+  padding: 1rem;
   font-size: 1.2rem;
+  text-align: center;
 `;
 
-const NewsDate = styled.p`
+const Modal = styled.div<{ show: boolean }>`
+  display: ${({ show }) => (show ? 'flex' : 'none')};
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+`;
+
+const ModalContent = styled.div`
+  background-color: #fff;
+  border-radius: 15px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease;
+  direction: rtl;
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    max-width: 95%;
+    max-height: 85vh;
+  }
+`;
+
+const ModalImage = styled.img`
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+
+  @media (max-width: 768px) {
+    height: 200px;
+  }
+`;
+
+const ModalBody = styled.div`
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+`;
+
+const ModalTitle = styled.h2`
+  color: #8B0000;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+`;
+
+const ModalDate = styled.p`
   color: #666;
   font-size: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 `;
 
-const NewsDescription = styled.p`
+const ModalDescription = styled.p`
   color: #333;
-  line-height: 1.6;
+  line-height: 1.8;
+  font-size: 1.1rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B0000;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #fff;
+  }
 `;
 
 const NavigationButton = styled.button<{ direction: 'prev' | 'next' }>`
@@ -168,6 +271,18 @@ const NewsSlider: React.FC = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [news, setNews] = React.useState<NewsItem[]>(newsItems);
   const [loading, setLoading] = React.useState(true);
+  const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCardClick = (item: NewsItem) => {
+    setSelectedNews(item);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setTimeout(() => setSelectedNews(null), 300);
+  };
 
   React.useEffect(() => {
     fetchNews();
@@ -224,11 +339,9 @@ const NewsSlider: React.FC = () => {
         </NavigationButton>
         <CardsContainer ref={containerRef}>
           {news.map((item) => (
-            <NewsCard key={item.id}>
+            <NewsCard key={item.id} onClick={() => handleCardClick(item)}>
               <NewsImage src={item.image} alt={item.title} />
               <NewsTitle>{item.title}</NewsTitle>
-              <NewsDate>{item.date}</NewsDate>
-              <NewsDescription>{item.description}</NewsDescription>
             </NewsCard>
           ))}
         </CardsContainer>
@@ -236,6 +349,22 @@ const NewsSlider: React.FC = () => {
           ‹
         </NavigationButton>
       </Container>
+
+      <Modal show={showModal} onClick={handleCloseModal}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
+          <CloseButton onClick={handleCloseModal}>×</CloseButton>
+          {selectedNews && (
+            <>
+              <ModalImage src={selectedNews.image} alt={selectedNews.title} />
+              <ModalBody>
+                <ModalTitle>{selectedNews.title}</ModalTitle>
+                {selectedNews.date && <ModalDate>{selectedNews.date}</ModalDate>}
+                <ModalDescription>{selectedNews.description}</ModalDescription>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </SliderContainer>
   );
 };

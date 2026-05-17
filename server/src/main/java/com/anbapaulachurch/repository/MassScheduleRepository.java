@@ -1,0 +1,11 @@
+package com.anbapaulachurch.repository;
+
+import com.anbapaulachurch.entity.MassSchedule;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface MassScheduleRepository extends JpaRepository<MassSchedule, Long> {
+    List<MassSchedule> findByActiveTrueOrderByDisplayOrderAsc();
+    List<MassSchedule> findAllByOrderByDisplayOrderAsc();
+}

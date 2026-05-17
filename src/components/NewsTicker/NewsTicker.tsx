@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { getTicker } from '../../services/api';
 
 const scroll = keyframes`
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 `;
 
 const TickerContainer = styled.div`
@@ -27,13 +24,13 @@ const TickerWrapper = styled.div`
   display: flex;
   white-space: nowrap;
   animation: ${scroll} 30s linear infinite;
-  
+
   &:hover {
     animation-play-state: paused;
   }
 `;
 
-const TickerItem = styled.span`
+const Item = styled.span`
   display: inline-flex;
   align-items: center;
   padding: 0 3rem;
@@ -52,27 +49,27 @@ const TickerItem = styled.span`
   }
 `;
 
-interface NewsTickerProps {
-  items?: string[];
-}
+const defaults = [
+  'مواعيد القداسات: الجمعة والسبت والأحد - ابتداءً من الساعة 6 صباحاً',
+  'اجتماع الشباب: كل يوم جمعة الساعة 7 مساءً',
+  'مدارس الأحد: كل يوم جمعة الساعة 10 صباحاً',
+  'درس الكتاب: كل يوم سبت الساعة 7 مساءً',
+];
 
-const NewsTicker: React.FC<NewsTickerProps> = ({ items }) => {
-  const defaultItems = [
-    'مواعيد القداسات: الجمعة والسبت والأحد - ابتداءً من الساعة 6 صباحاً',
-    'اجتماع الشباب: كل يوم جمعة الساعة 7 مساءً',
-    'مدارس الأحد: كل يوم جمعة الساعة 10 صباحاً',
-    'درس الكتاب: كل يوم سبت الساعة 7 مساءً',
-    'للتواصل: 01234567890'
-  ];
+const NewsTicker: React.FC = () => {
+  const [items, setItems] = useState<string[]>(defaults);
 
-  const newsItems = items || defaultItems;
+  useEffect(() => {
+    getTicker()
+      .then(res => { if (res.data.length > 0) setItems(res.data.map(t => t.content)); })
+      .catch(() => {});
+  }, []);
 
   return (
     <TickerContainer>
       <TickerWrapper>
-        {/* Duplicate items for seamless loop */}
-        {[...newsItems, ...newsItems].map((item, index) => (
-          <TickerItem key={index}>{item}</TickerItem>
+        {[...items, ...items].map((item, i) => (
+          <Item key={i}>{item}</Item>
         ))}
       </TickerWrapper>
     </TickerContainer>

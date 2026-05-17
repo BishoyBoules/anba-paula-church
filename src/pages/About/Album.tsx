@@ -1,108 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { getAlbumPhotos, AlbumPhoto } from '../../services/api';
 
 const PageContainer = styled.div`
-  padding: 4rem 0;
+  padding: 2rem;
   direction: rtl;
-`;
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
 `;
 
 const Title = styled.h1`
   color: #8B0000;
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   font-size: 2.5rem;
-`;
-
-const AlbumGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem 0;
-`;
-
-const ImageCard = styled(motion.div)`
-  cursor: pointer;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  position: relative;
-`;
-
-const StyledImage = styled.img`
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-
-  ${ImageCard}:hover & {
-    transform: scale(1.05);
-  }
-`;
-
-const ImageOverlay = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 1rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  ${ImageCard}:hover & {
-    opacity: 1;
-  }
-
-  h3 {
-    margin: 0;
-    font-size: 1.1rem;
-  }
-`;
-
-const ModalOverlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 2rem;
-`;
-
-const ModalContent = styled(motion.div)`
-  max-width: 90vw;
-  max-height: 90vh;
-  
-  img {
-    max-width: 100%;
-    max-height: 90vh;
-    object-fit: contain;
-  }
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-  z-index: 1001;
 `;
 
 const FilterContainer = styled.div`
@@ -113,137 +24,148 @@ const FilterContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-interface FilterButtonProps {
-  active: boolean;
-}
-
-const FilterButton = styled.button<FilterButtonProps>`
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  background: ${props => props.active ? '#8B0000' : '#fff'};
-  color: ${props => props.active ? '#fff' : '#333'};
+const FilterBtn = styled.button<{ active: boolean }>`
+  padding: 0.5rem 1.25rem;
+  border: 2px solid #8B0000;
+  border-radius: 25px;
+  background: ${p => p.active ? '#8B0000' : 'white'};
+  color: ${p => p.active ? 'white' : '#8B0000'};
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  font-size: 1rem;
+  transition: all 0.3s;
 
-  &:hover {
-    transform: translateY(-2px);
-  }
+  &:hover { background: #8B0000; color: white; }
 `;
 
-interface Image {
-  id: number;
-  src: string;
-  alt: string;
-  title: string;
-  category: string;
-}
+const PhotoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+`;
 
-const images: Image[] = [
-  {
-    id: 1,
-    src: '/img/album/mass1.jpg',
-    alt: 'القداس الإلهي',
-    title: 'القداس الإلهي',
-    category: 'liturgy'
-  },
-  {
-    id: 2,
-    src: '/img/album/event1.jpg',
-    alt: 'مؤتمر الشباب',
-    title: 'مؤتمر الشباب',
-    category: 'events'
-  },
-  {
-    id: 3,
-    src: '/img/album/trip1.jpg',
-    alt: 'رحلة العائلات',
-    title: 'رحلة العائلات',
-    category: 'trips'
-  },
-  {
-    id: 4,
-    src: '/img/album/service1.jpg',
-    alt: 'خدمة المسنين',
-    title: 'خدمة المسنين',
-    category: 'service'
-  }
-];
+const PhotoCard = styled(motion.div)`
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 
-const filters = [
-  { id: 'all', label: 'الكل' },
-  { id: 'liturgy', label: 'القداسات' },
-  { id: 'events', label: 'المؤتمرات' },
-  { id: 'trips', label: 'الرحلات' },
-  { id: 'service', label: 'الخدمات' }
-];
+  &:hover img { transform: scale(1.05); }
+`;
+
+const Photo = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s;
+`;
+
+const PhotoTitle = styled.p`
+  padding: 0.75rem;
+  background: white;
+  color: #333;
+  font-size: 0.95rem;
+  text-align: center;
+`;
+
+const Overlay = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+`;
+
+const LargeImage = styled.img`
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 8px;
+  object-fit: contain;
+`;
+
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+`;
+
+const Empty = styled.p`
+  text-align: center;
+  color: #999;
+  padding: 3rem;
+`;
 
 const Album: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [photos, setPhotos] = useState<AlbumPhoto[]>([]);
+  const [categories, setCategories] = useState<string[]>(['الكل']);
+  const [activeFilter, setActiveFilter] = useState('الكل');
+  const [selected, setSelected] = useState<AlbumPhoto | null>(null);
 
-  const filteredImages = images.filter(
-    img => activeFilter === 'all' || img.category === activeFilter
-  );
+  useEffect(() => {
+    getAlbumPhotos()
+      .then(res => {
+        setPhotos(res.data);
+        const cats = Array.from(new Set(res.data.map(p => p.category).filter(Boolean)));
+        if (cats.length > 0) setCategories(['الكل', ...cats]);
+      })
+      .catch(() => {});
+  }, []);
+
+  const filtered = activeFilter === 'الكل' ? photos : photos.filter(p => p.category === activeFilter);
 
   return (
     <PageContainer>
-      <Container>
-        <Title>ألبوم الصور</Title>
-        
+      <Title>ألبوم الصور</Title>
+
+      {categories.length > 1 && (
         <FilterContainer>
-          {filters.map(filter => (
-            <FilterButton
-              key={filter.id}
-              active={activeFilter === filter.id}
-              onClick={() => setActiveFilter(filter.id)}
-            >
-              {filter.label}
-            </FilterButton>
+          {categories.map(cat => (
+            <FilterBtn key={cat} active={activeFilter === cat} onClick={() => setActiveFilter(cat)}>
+              {cat}
+            </FilterBtn>
           ))}
         </FilterContainer>
+      )}
 
-        <AlbumGrid>
-          {filteredImages.map((image, index) => (
-            <ImageCard
-              key={image.id}
-              onClick={() => setSelectedImage(image)}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+      {filtered.length === 0 ? (
+        <Empty>لا توجد صور في هذا القسم</Empty>
+      ) : (
+        <PhotoGrid>
+          {filtered.map((photo, i) => (
+            <PhotoCard
+              key={photo.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.05 }}
+              onClick={() => setSelected(photo)}
             >
-              <StyledImage src={image.src} alt={image.alt} />
-              <ImageOverlay>
-                <h3>{image.title}</h3>
-              </ImageOverlay>
-            </ImageCard>
+              <Photo src={photo.image} alt={photo.title} />
+              {photo.title && <PhotoTitle>{photo.title}</PhotoTitle>}
+            </PhotoCard>
           ))}
-        </AlbumGrid>
+        </PhotoGrid>
+      )}
 
-        <AnimatePresence mode="wait">
-          {selectedImage && (
-            <ModalOverlay
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedImage(null)}
-            >
-              <CloseButton onClick={() => setSelectedImage(null)}>
-                <FaTimes />
-              </CloseButton>
-              <ModalContent
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.8 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <img src={selectedImage.src} alt={selectedImage.alt} />
-              </ModalContent>
-            </ModalOverlay>
-          )}
-        </AnimatePresence>
-      </Container>
+      <AnimatePresence>
+        {selected && (
+          <Overlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelected(null)}
+          >
+            <CloseBtn onClick={() => setSelected(null)}><FaTimes /></CloseBtn>
+            <LargeImage src={selected.image} alt={selected.title} onClick={e => e.stopPropagation()} />
+          </Overlay>
+        )}
+      </AnimatePresence>
     </PageContainer>
   );
 };

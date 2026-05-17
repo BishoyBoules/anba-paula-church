@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaArrowRight, FaPlus, FaTrash, FaSave } from 'react-icons/fa';
-import ftAnton from '../../img/ft-anton.jpeg';
-import ftPhilo from '../../img/ft-philo.jpeg';
-import ftIbrahim from '../../img/ft-Ibrahim.jpeg';
-import ftArmia from '../../img/ft-Armia.jpeg';
+import { getFatherById, updateFatherSchedules, ScheduleItem } from '../../services/api';
 
 const Container = styled.div`
   padding: 2rem;
@@ -38,9 +35,7 @@ const BackButton = styled(Link)`
   border-radius: 8px;
   transition: background 0.3s;
 
-  &:hover {
-    background: #555;
-  }
+  &:hover { background: #555; }
 `;
 
 const SaveButton = styled.button`
@@ -55,14 +50,8 @@ const SaveButton = styled.button`
   cursor: pointer;
   transition: background 0.3s;
 
-  &:hover {
-    background: #45a049;
-  }
-
-  &:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
+  &:hover { background: #45a049; }
+  &:disabled { background: #ccc; cursor: not-allowed; }
 `;
 
 const ContentWrapper = styled.div`
@@ -145,10 +134,7 @@ const Input = styled.input`
   border-radius: 4px;
   font-size: 0.9rem;
 
-  &:focus {
-    outline: none;
-    border-color: #8B0000;
-  }
+  &:focus { outline: none; border-color: #8B0000; }
 `;
 
 const AddButton = styled.button`
@@ -164,9 +150,7 @@ const AddButton = styled.button`
   font-size: 0.9rem;
   margin: 0 auto;
 
-  &:hover {
-    background: #3f0101;
-  }
+  &:hover { background: #3f0101; }
 `;
 
 const DeleteButton = styled.button`
@@ -180,9 +164,7 @@ const DeleteButton = styled.button`
   align-items: center;
   justify-content: center;
 
-  &:hover {
-    background: #d32f2f;
-  }
+  &:hover { background: #d32f2f; }
 `;
 
 const EmptyMessage = styled.div`
@@ -199,422 +181,195 @@ const LoadingMessage = styled.div`
   color: #666;
 `;
 
-interface MeetingTime {
-    day: string;
-    time: string;
-    location?: string;
-}
-
-interface FatherType {
-    id: string;
-    name: string;
-    image: string;
-    confessionTimes?: MeetingTime[];
-    meetings?: MeetingTime[];
-    availability?: MeetingTime[];
-}
-
-const initialFathersData: FatherType[] = [
-    {
-        id: '1',
-        name: 'القمص إبراهيم توفيق',
-        image: ftIbrahim,
-        confessionTimes: [
-            { day: 'الجمعة', time: '6:00 - 8:00 م', location: 'الكنيسة' },
-            { day: 'السبت', time: '5:00 - 7:00 م', location: 'الكنيسة' }
-        ],
-        meetings: [
-            { day: 'الأحد', time: '5:00 م', location: 'قاعة الاجتماعات' },
-            { day: 'الأربعاء', time: '7:00 م', location: 'قاعة الاجتماعات' }
-        ],
-        availability: [
-            { day: 'السبت', time: '10:00 ص - 2:00 م', location: 'المكتب' },
-            { day: 'الأحد', time: '12:00 - 3:00 م', location: 'المكتب' }
-        ]
-    },
-    {
-        id: '2',
-        name: 'القمص أنطونيوس منير',
-        image: ftAnton,
-        confessionTimes: [
-            { day: 'الخميس', time: '6:00 - 8:00 م', location: 'الكنيسة' },
-            { day: 'الجمعة', time: '5:00 - 7:00 م', location: 'الكنيسة' }
-        ],
-        meetings: [
-            { day: 'الثلاثاء', time: '6:00 م', location: 'قاعة الاجتماعات' },
-            { day: 'الجمعة', time: '7:00 م', location: 'قاعة الاجتماعات' }
-        ],
-        availability: [
-            { day: 'الأحد', time: '11:00 ص - 2:00 م', location: 'المكتب' },
-            { day: 'الثلاثاء', time: '4:00 - 7:00 م', location: 'المكتب' }
-        ]
-    },
-    {
-        id: '3',
-        name: 'القمص فيلوباتير رمزي',
-        image: ftPhilo,
-        confessionTimes: [
-            { day: 'الأربعاء', time: '6:00 - 8:00 م', location: 'الكنيسة' },
-            { day: 'السبت', time: '4:00 - 6:00 م', location: 'الكنيسة' }
-        ],
-        meetings: [
-            { day: 'الأحد', time: '4:00 م', location: 'قاعة الاجتماعات' },
-            { day: 'الخميس', time: '6:30 م', location: 'قاعة الاجتماعات' }
-        ],
-        availability: [
-            { day: 'الاثنين', time: '3:00 - 6:00 م', location: 'المكتب' },
-            { day: 'الخميس', time: '10:00 ص - 1:00 م', location: 'المكتب' }
-        ]
-    },
-    {
-        id: '4',
-        name: 'القس إرميا حلمي',
-        image: ftArmia,
-        confessionTimes: [
-            { day: 'الثلاثاء', time: '6:00 - 8:00 م', location: 'الكنيسة' },
-            { day: 'الجمعة', time: '5:30 - 7:30 م', location: 'الكنيسة' }
-        ],
-        meetings: [
-            { day: 'الأحد', time: '3:30 م', location: 'قاعة الاجتماعات' },
-            { day: 'الاثنين', time: '7:00 م', location: 'قاعة الاجتماعات' }
-        ],
-        availability: [
-            { day: 'الأربعاء', time: '2:00 - 5:00 م', location: 'المكتب' },
-            { day: 'السبت', time: '9:00 ص - 12:00 م', location: 'المكتب' }
-        ]
-    }
-];
-
-const getLocalFathersData = (): FatherType[] => {
-    const stored = localStorage.getItem('fathersScheduleData');
-    if (stored) {
-        try {
-            return JSON.parse(stored);
-        } catch (e) {
-            return initialFathersData;
-        }
-    }
-    return initialFathersData;
-};
-
-const saveLocalFathersData = (data: FatherType[]) => {
-    localStorage.setItem('fathersScheduleData', JSON.stringify(data));
-};
-
 const AdminFatherDetail: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const [father, setFather] = useState<FatherType | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const [fatherName, setFatherName] = useState('');
+  const [fatherImage, setFatherImage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-    const [confessionTimes, setConfessionTimes] = useState<MeetingTime[]>([]);
-    const [meetings, setMeetings] = useState<MeetingTime[]>([]);
-    const [availability, setAvailability] = useState<MeetingTime[]>([]);
+  const [confessionTimes, setConfessionTimes] = useState<ScheduleItem[]>([]);
+  const [meetings, setMeetings] = useState<ScheduleItem[]>([]);
+  const [availability, setAvailability] = useState<ScheduleItem[]>([]);
 
-    useEffect(() => {
-        fetchFatherDetails();
-    }, [id]);
+  useEffect(() => {
+    if (!id) { setLoading(false); return; }
 
-    const fetchFatherDetails = () => {
-        if (!id) {
-            setLoading(false);
-            return;
-        }
+    getFatherById(id)
+      .then(res => {
+        setFatherName(res.data.name);
+        setFatherImage(res.data.image);
+        setConfessionTimes(res.data.confessionTimes || []);
+        setMeetings(res.data.meetings || []);
+        setAvailability(res.data.availability || []);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [id]);
 
-        const allFathers = getLocalFathersData();
-        const foundFather = allFathers.find(f => f.id === id);
-
-        if (foundFather) {
-            setFather(foundFather);
-            setConfessionTimes(foundFather.confessionTimes || []);
-            setMeetings(foundFather.meetings || []);
-            setAvailability(foundFather.availability || []);
-        }
-
-        setLoading(false);
-    };
-
-    const handleSave = () => {
-        if (!id) return;
-
-        setSaving(true);
-        try {
-            const allFathers = getLocalFathersData();
-            const updatedFathers = allFathers.map(f =>
-                f.id === id
-                    ? { ...f, confessionTimes, meetings, availability }
-                    : f
-            );
-            saveLocalFathersData(updatedFathers);
-            alert('تم الحفظ بنجاح');
-        } catch (error) {
-            console.error('Error saving:', error);
-            alert('حدث خطأ أثناء الحفظ');
-        } finally {
-            setSaving(false);
-        }
-    };
-
-    const addRow = (type: 'confession' | 'meetings' | 'availability') => {
-        const newRow: MeetingTime = { day: '', time: '', location: '' };
-        if (type === 'confession') {
-            setConfessionTimes([...confessionTimes, newRow]);
-        } else if (type === 'meetings') {
-            setMeetings([...meetings, newRow]);
-        } else {
-            setAvailability([...availability, newRow]);
-        }
-    };
-
-    const deleteRow = (type: 'confession' | 'meetings' | 'availability', index: number) => {
-        if (type === 'confession') {
-            setConfessionTimes(confessionTimes.filter((_, i) => i !== index));
-        } else if (type === 'meetings') {
-            setMeetings(meetings.filter((_, i) => i !== index));
-        } else {
-            setAvailability(availability.filter((_, i) => i !== index));
-        }
-    };
-
-    const updateRow = (
-        type: 'confession' | 'meetings' | 'availability',
-        index: number,
-        field: keyof MeetingTime,
-        value: string
-    ) => {
-        if (type === 'confession') {
-            const updated = [...confessionTimes];
-            updated[index] = { ...updated[index], [field]: value };
-            setConfessionTimes(updated);
-        } else if (type === 'meetings') {
-            const updated = [...meetings];
-            updated[index] = { ...updated[index], [field]: value };
-            setMeetings(updated);
-        } else {
-            const updated = [...availability];
-            updated[index] = { ...updated[index], [field]: value };
-            setAvailability(updated);
-        }
-    };
-
-    if (loading) {
-        return (
-            <Container>
-                <Header>
-                    <Title>تفاصيل الأب</Title>
-                    <BackButton to="/admin/fathers">
-                        <FaArrowRight />
-                        العودة
-                    </BackButton>
-                </Header>
-                <LoadingMessage>جاري التحميل...</LoadingMessage>
-            </Container>
-        );
+  const handleSave = async () => {
+    if (!id) return;
+    setSaving(true);
+    try {
+      await updateFatherSchedules(Number(id), { confessionTimes, meetings, availability });
+      alert('تم الحفظ بنجاح');
+    } catch (error) {
+      console.error('Error saving:', error);
+      alert('حدث خطأ أثناء الحفظ');
+    } finally {
+      setSaving(false);
     }
+  };
 
-    if (!father) {
-        return (
-            <Container>
-                <Header>
-                    <Title>تفاصيل الأب</Title>
-                    <BackButton to="/admin/fathers">
-                        <FaArrowRight />
-                        العودة
-                    </BackButton>
-                </Header>
-                <LoadingMessage>لم يتم العثور على البيانات</LoadingMessage>
-            </Container>
-        );
-    }
+  const addRow = (type: 'confession' | 'meetings' | 'availability') => {
+    const row: ScheduleItem = { day: '', time: '', location: '', service: '' };
+    if (type === 'confession') setConfessionTimes([...confessionTimes, row]);
+    else if (type === 'meetings') setMeetings([...meetings, row]);
+    else setAvailability([...availability, row]);
+  };
 
+  const deleteRow = (type: 'confession' | 'meetings' | 'availability', index: number) => {
+    if (type === 'confession') setConfessionTimes(confessionTimes.filter((_, i) => i !== index));
+    else if (type === 'meetings') setMeetings(meetings.filter((_, i) => i !== index));
+    else setAvailability(availability.filter((_, i) => i !== index));
+  };
+
+  const updateRow = (
+    type: 'confession' | 'meetings' | 'availability',
+    index: number,
+    field: keyof ScheduleItem,
+    value: string
+  ) => {
+    const update = (arr: ScheduleItem[]) => arr.map((item, i) => i === index ? { ...item, [field]: value } : item);
+    if (type === 'confession') setConfessionTimes(update(confessionTimes));
+    else if (type === 'meetings') setMeetings(update(meetings));
+    else setAvailability(update(availability));
+  };
+
+  if (loading) {
     return (
-        <Container>
-            <Header>
-                <Title>تفاصيل الأب</Title>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <SaveButton onClick={handleSave} disabled={saving}>
-                        <FaSave />
-                        {saving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
-                    </SaveButton>
-                    <BackButton to="/admin/fathers">
-                        <FaArrowRight />
-                        العودة
-                    </BackButton>
-                </div>
-            </Header>
-
-            <ContentWrapper>
-                <HeaderSection>
-                    <FatherName>{father.name}</FatherName>
-                    <FatherImage src={father.image} alt={father.name} />
-                </HeaderSection>
-
-                <TablesSection>
-                    <TableCard>
-                        <TableTitle>مواعيد الاعتراف</TableTitle>
-                        {confessionTimes.length > 0 ? (
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <TableHeader>اليوم</TableHeader>
-                                        <TableHeader>الوقت</TableHeader>
-                                        <TableHeader>المكان</TableHeader>
-                                        <TableHeader style={{ width: '50px' }}></TableHeader>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {confessionTimes.map((item, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.day}
-                                                    onChange={(e) => updateRow('confession', index, 'day', e.target.value)}
-                                                    placeholder="مثال: الجمعة"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.time}
-                                                    onChange={(e) => updateRow('confession', index, 'time', e.target.value)}
-                                                    placeholder="مثال: 6:00 - 8:00 م"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.location || ''}
-                                                    onChange={(e) => updateRow('confession', index, 'location', e.target.value)}
-                                                    placeholder="مثال: الكنيسة"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <DeleteButton onClick={() => deleteRow('confession', index)}>
-                                                    <FaTrash />
-                                                </DeleteButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        ) : (
-                            <EmptyMessage>لا توجد مواعيد</EmptyMessage>
-                        )}
-                        <AddButton onClick={() => addRow('confession')}>
-                            <FaPlus />
-                            إضافة موعد
-                        </AddButton>
-                    </TableCard>
-
-                    <TableCard>
-                        <TableTitle>الاجتماعات</TableTitle>
-                        {meetings.length > 0 ? (
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <TableHeader>اليوم</TableHeader>
-                                        <TableHeader>الوقت</TableHeader>
-                                        <TableHeader>المكان</TableHeader>
-                                        <TableHeader style={{ width: '50px' }}></TableHeader>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {meetings.map((item, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.day}
-                                                    onChange={(e) => updateRow('meetings', index, 'day', e.target.value)}
-                                                    placeholder="مثال: الأحد"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.time}
-                                                    onChange={(e) => updateRow('meetings', index, 'time', e.target.value)}
-                                                    placeholder="مثال: 5:00 م"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.location || ''}
-                                                    onChange={(e) => updateRow('meetings', index, 'location', e.target.value)}
-                                                    placeholder="مثال: قاعة الاجتماعات"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <DeleteButton onClick={() => deleteRow('meetings', index)}>
-                                                    <FaTrash />
-                                                </DeleteButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        ) : (
-                            <EmptyMessage>لا توجد اجتماعات</EmptyMessage>
-                        )}
-                        <AddButton onClick={() => addRow('meetings')}>
-                            <FaPlus />
-                            إضافة اجتماع
-                        </AddButton>
-                    </TableCard>
-
-                    <TableCard>
-                        <TableTitle>أوقات التواجد</TableTitle>
-                        {availability.length > 0 ? (
-                            <Table>
-                                <thead>
-                                    <tr>
-                                        <TableHeader>اليوم</TableHeader>
-                                        <TableHeader>الوقت</TableHeader>
-                                        <TableHeader>المكان</TableHeader>
-                                        <TableHeader style={{ width: '50px' }}></TableHeader>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {availability.map((item, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.day}
-                                                    onChange={(e) => updateRow('availability', index, 'day', e.target.value)}
-                                                    placeholder="مثال: السبت"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.time}
-                                                    onChange={(e) => updateRow('availability', index, 'time', e.target.value)}
-                                                    placeholder="مثال: 10:00 ص - 2:00 م"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <Input
-                                                    value={item.location || ''}
-                                                    onChange={(e) => updateRow('availability', index, 'location', e.target.value)}
-                                                    placeholder="مثال: المكتب"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <DeleteButton onClick={() => deleteRow('availability', index)}>
-                                                    <FaTrash />
-                                                </DeleteButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        ) : (
-                            <EmptyMessage>لا توجد أوقات محددة</EmptyMessage>
-                        )}
-                        <AddButton onClick={() => addRow('availability')}>
-                            <FaPlus />
-                            إضافة وقت
-                        </AddButton>
-                    </TableCard>
-                </TablesSection>
-            </ContentWrapper>
-        </Container>
+      <Container>
+        <Header>
+          <Title>تفاصيل الأب</Title>
+          <BackButton to="/admin/fathers"><FaArrowRight /> العودة</BackButton>
+        </Header>
+        <LoadingMessage>جاري التحميل...</LoadingMessage>
+      </Container>
     );
+  }
+
+  return (
+    <Container>
+      <Header>
+        <Title>تفاصيل الأب</Title>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <SaveButton onClick={handleSave} disabled={saving}>
+            <FaSave />
+            {saving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
+          </SaveButton>
+          <BackButton to="/admin/fathers"><FaArrowRight /> العودة</BackButton>
+        </div>
+      </Header>
+
+      <ContentWrapper>
+        <HeaderSection>
+          <FatherName>{fatherName}</FatherName>
+          <FatherImage src={fatherImage} alt={fatherName} />
+        </HeaderSection>
+
+        <TablesSection>
+          <TableCard>
+            <TableTitle>مواعيد الاعتراف</TableTitle>
+            {confessionTimes.length > 0 ? (
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>اليوم</TableHeader>
+                    <TableHeader>الوقت</TableHeader>
+                    <TableHeader>المكان</TableHeader>
+                    <TableHeader style={{ width: '50px' }}></TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {confessionTimes.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell><Input value={item.day} onChange={(e) => updateRow('confession', index, 'day', e.target.value)} placeholder="مثال: الجمعة" /></TableCell>
+                      <TableCell><Input value={item.time} onChange={(e) => updateRow('confession', index, 'time', e.target.value)} placeholder="مثال: 6:00 - 8:00 م" /></TableCell>
+                      <TableCell><Input value={item.location || ''} onChange={(e) => updateRow('confession', index, 'location', e.target.value)} placeholder="مثال: الكنيسة" /></TableCell>
+                      <TableCell><DeleteButton onClick={() => deleteRow('confession', index)}><FaTrash /></DeleteButton></TableCell>
+                    </TableRow>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <EmptyMessage>لا توجد مواعيد</EmptyMessage>
+            )}
+            <AddButton onClick={() => addRow('confession')}><FaPlus /> إضافة موعد</AddButton>
+          </TableCard>
+
+          <TableCard>
+            <TableTitle>الاجتماعات</TableTitle>
+            {meetings.length > 0 ? (
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>اليوم</TableHeader>
+                    <TableHeader>الوقت</TableHeader>
+                    <TableHeader>المكان</TableHeader>
+                    <TableHeader style={{ width: '50px' }}></TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {meetings.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell><Input value={item.day} onChange={(e) => updateRow('meetings', index, 'day', e.target.value)} placeholder="مثال: الأحد" /></TableCell>
+                      <TableCell><Input value={item.time} onChange={(e) => updateRow('meetings', index, 'time', e.target.value)} placeholder="مثال: 5:00 م" /></TableCell>
+                      <TableCell><Input value={item.location || ''} onChange={(e) => updateRow('meetings', index, 'location', e.target.value)} placeholder="مثال: قاعة الاجتماعات" /></TableCell>
+                      <TableCell><DeleteButton onClick={() => deleteRow('meetings', index)}><FaTrash /></DeleteButton></TableCell>
+                    </TableRow>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <EmptyMessage>لا توجد اجتماعات</EmptyMessage>
+            )}
+            <AddButton onClick={() => addRow('meetings')}><FaPlus /> إضافة اجتماع</AddButton>
+          </TableCard>
+
+          <TableCard>
+            <TableTitle>الخدمات</TableTitle>
+            {availability.length > 0 ? (
+              <Table>
+                <thead>
+                  <tr>
+                    <TableHeader>الخدمة</TableHeader>
+                    <TableHeader>اليوم</TableHeader>
+                    <TableHeader>الوقت</TableHeader>
+                    <TableHeader>المكان</TableHeader>
+                    <TableHeader style={{ width: '50px' }}></TableHeader>
+                  </tr>
+                </thead>
+                <tbody>
+                  {availability.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell><Input value={item.service} onChange={(e) => updateRow('availability', index, 'service', e.target.value)} placeholder="مثال: القداس" /></TableCell>
+                      <TableCell><Input value={item.day} onChange={(e) => updateRow('availability', index, 'day', e.target.value)} placeholder="مثال: السبت" /></TableCell>
+                      <TableCell><Input value={item.time} onChange={(e) => updateRow('availability', index, 'time', e.target.value)} placeholder="مثال: 10:00 ص - 2:00 م" /></TableCell>
+                      <TableCell><Input value={item.location || ''} onChange={(e) => updateRow('availability', index, 'location', e.target.value)} placeholder="مثال: المكتب" /></TableCell>
+                      <TableCell><DeleteButton onClick={() => deleteRow('availability', index)}><FaTrash /></DeleteButton></TableCell>
+                    </TableRow>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <EmptyMessage>لا توجد خدمات محددة</EmptyMessage>
+            )}
+            <AddButton onClick={() => addRow('availability')}><FaPlus /> إضافة خدمة</AddButton>
+          </TableCard>
+        </TablesSection>
+      </ContentWrapper>
+    </Container>
+  );
 };
 
 export default AdminFatherDetail;

@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase/config';
-import ftAnton from '../../img/ft-anton.jpeg'
-import ftPhilo from '../../img/ft-philo.jpeg'
-import ftIbrahim from '../../img/ft-Ibrahim.jpeg'
-import ftArmia from '../../img/ft-Armia.jpeg'
+import { getFathers, Father } from '../../services/api';
+import ftAnton from '../../img/ft-anton.jpeg';
+import ftPhilo from '../../img/ft-philo.jpeg';
+import ftIbrahim from '../../img/ft-Ibrahim.jpeg';
+import ftArmia from '../../img/ft-Armia.jpeg';
 
 const PageContainer = styled.div`
   padding: 2rem;
@@ -94,56 +93,21 @@ const FatherName = styled.h3`
   font-size: 1.5rem;
 `;
 
+const defaultFathers: Father[] = [
+  { id: 1, name: 'القمص إبراهيم توفيق', image: ftIbrahim },
+  { id: 2, name: 'القمص أنطونيوس منير', image: ftAnton },
+  { id: 3, name: 'القمص فيلوباتير رمزي', image: ftPhilo },
+  { id: 4, name: 'القس إرميا حلمي', image: ftArmia },
+];
+
 const ChurchFathers: React.FC = () => {
-  const [fathers, setFathers] = React.useState([
-    {
-      id: '1',
-      name: 'القمص إبراهيم توفيق',
-      image: ftIbrahim,
-    },
-    {
-      id: '2',
-      name: 'القمص أنطونيوس منير',
-      image: ftAnton,
-    },
-    {
-      id: '3',
-      name: 'القمص فيلوباتير رمزي',
-      image: ftPhilo,
-    },
-    {
-      id: '4',
-      name: 'القس إرميا حلمي',
-      image: ftArmia,
-    }
-  ]);
+  const [fathers, setFathers] = React.useState<Father[]>(defaultFathers);
 
   React.useEffect(() => {
-    fetchFathers();
+    getFathers()
+      .then(res => { if (res.data.length > 0) setFathers(res.data); })
+      .catch(() => {});
   }, []);
-
-  const fetchFathers = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'fathers'));
-      const fathersData: any[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        fathersData.push({
-          id: doc.id,
-          name: data.name,
-          image: data.image
-        });
-      });
-
-      // If there's data from Firebase, use it; otherwise use default
-      if (fathersData.length > 0) {
-        setFathers(fathersData);
-      }
-    } catch (error) {
-      console.error('Error fetching fathers:', error);
-      // Keep using default fathers on error
-    }
-  };
 
   return (
     <PageContainer>

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FaSoundcloud, FaYoutube, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaSoundcloud, FaYoutube, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { getSettings, getMassSchedules, MassSchedule } from '../../services/api';
 
 const FooterContainer = styled.footer`
   background: #1a1a1a;
@@ -53,9 +54,7 @@ const ContactItem = styled.div`
     justify-content: center;
   }
 
-  svg {
-    color: #D4AF37;
-  }
+  svg { color: #D4AF37; }
 `;
 
 const SocialLinks = styled.div`
@@ -73,9 +72,7 @@ const SocialLink = styled.a`
   font-size: 1.5rem;
   transition: color 0.3s ease;
 
-  &:hover {
-    color: #D4AF37;
-  }
+  &:hover { color: #D4AF37; }
 `;
 
 const QuickLinks = styled.ul`
@@ -85,27 +82,27 @@ const QuickLinks = styled.ul`
   gap: 0.5rem;
 `;
 
-const QuickLinkStyled = styled(Link)`
+const StyledLink = styled(Link)`
   color: white;
   text-decoration: none;
   transition: color 0.3s ease;
 
-  &:hover {
-    color: #D4AF37;
-  }
+  &:hover { color: #D4AF37; }
 `;
 
-const QuickLink: React.FC<{ to: string; children: React.ReactNode }> = ({ to, children }) => {
-  const handleClick = () => {
-    window.scrollTo(0, 0);
-  };
+const ScheduleItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
 
-  return (
-    <QuickLinkStyled to={to} onClick={handleClick}>
-      {children}
-    </QuickLinkStyled>
-  );
-};
+  @media (max-width: 768px) {
+    justify-content: center;
+    flex-direction: column;
+    gap: 0;
+  }
+`;
 
 const Copyright = styled.div`
   text-align: center;
@@ -114,14 +111,37 @@ const Copyright = styled.div`
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.9rem;
   color: #888;
-
-  @media (max-width: 768px) {
-    margin-top: 2rem;
-    padding-top: 1rem;
-  }
 `;
 
+const defaultSettings = {
+  phone1: '0224146674',
+  phone2: '0224181070',
+  maps_url: 'https://maps.app.goo.gl/n9ifZ77nuL23egoq6?g_st=aw',
+  youtube_url: 'https://www.youtube.com/channel/UC4k_Tq45EqB6_VlLfO_Nh_A',
+  soundcloud_url: 'https://soundcloud.com/user-587199843',
+  church_name: 'كنيسة الأنبا بولا - أرض الجولف',
+};
+
+const defaultSchedules: MassSchedule[] = [
+  { id: 1, day: 'الجمعة', time: '٦:٠٠ - ٨:٠٠ صباحاً', displayOrder: 1, active: true },
+  { id: 2, day: 'السبت', time: '٦:٠٠ - ٨:٠٠ صباحاً', displayOrder: 2, active: true },
+  { id: 3, day: 'الأحد', time: '٦:٠٠ - ٨:٠٠ صباحاً', displayOrder: 3, active: true },
+  { id: 4, day: 'الاثنين - الخميس', time: '٩:٠٠ - ١٢:٠٠ ظهراً', displayOrder: 4, active: true },
+];
+
 const Footer: React.FC = () => {
+  const [settings, setSettings] = useState(defaultSettings);
+  const [schedules, setSchedules] = useState<MassSchedule[]>(defaultSchedules);
+
+  useEffect(() => {
+    getSettings()
+      .then(res => setSettings({ ...defaultSettings, ...res.data }))
+      .catch(() => {});
+    getMassSchedules()
+      .then(res => { if (res.data.length > 0) setSchedules(res.data); })
+      .catch(() => {});
+  }, []);
+
   return (
     <FooterContainer>
       <Container>
@@ -131,70 +151,63 @@ const Footer: React.FC = () => {
             <ContactInfo>
               <ContactItem>
                 <FaMapMarkerAlt />
-                <a
-                  href="https://maps.app.goo.gl/n9ifZ77nuL23egoq6?g_st=aw"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: 'white', textDecoration: 'underline' }}
-                  aria-label="عرض الموقع على خرائط جوجل"
-                >
+                <a href={settings.maps_url} target="_blank" rel="noopener noreferrer"
+                  style={{ color: 'white', textDecoration: 'underline' }}>
                   الموقع
                 </a>
               </ContactItem>
               <ContactItem>
                 <FaPhone />
-                <a href="tel:0224146674" onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'} onMouseLeave={(e) => e.currentTarget.style.color = 'white'}>0224146674</a>
-                <a href="tel:0224181070" onMouseEnter={(e) => e.currentTarget.style.color = '#D4AF37'} onMouseLeave={(e) => e.currentTarget.style.color = 'white'}>0224181070</a>
+                <a href={`tel:${settings.phone1}`} style={{ color: 'white' }}>{settings.phone1}</a>
+                {settings.phone2 && <a href={`tel:${settings.phone2}`} style={{ color: 'white' }}>{settings.phone2}</a>}
               </ContactItem>
-              {/* <ContactItem>
-                <FaEnvelope />
-                <span>info@anbapaulachurch.com</span>
-              </ContactItem> */}
             </ContactInfo>
             <SocialLinks>
-              <SocialLink
-                href="https://www.youtube.com/channel/UC4k_Tq45EqB6_VlLfO_Nh_A"
-                target="_blank"
-                aria-label="Visit our YouTube channel"
-              >
-                <FaYoutube />
-              </SocialLink>
-              <SocialLink href="https://soundcloud.com/user-587199843" target="_blank">
-                <FaSoundcloud />
-              </SocialLink>
+              {settings.youtube_url && (
+                <SocialLink href={settings.youtube_url} target="_blank" aria-label="YouTube">
+                  <FaYoutube />
+                </SocialLink>
+              )}
+              {settings.soundcloud_url && (
+                <SocialLink href={settings.soundcloud_url} target="_blank" aria-label="SoundCloud">
+                  <FaSoundcloud />
+                </SocialLink>
+              )}
             </SocialLinks>
           </Section>
 
           <Section>
             <h3>روابط سريعة</h3>
             <QuickLinks>
-              <li><QuickLink to="/">الصفحة الرئيسية</QuickLink></li>
-              <li><QuickLink to="/about">عن كنيستنا</QuickLink></li>
-              <li><QuickLink to="/services">خدمات الكنيسة</QuickLink></li>
-              <li><QuickLink to="/mass/schedule">القداسات</QuickLink></li>
+              <li><StyledLink to="/">الصفحة الرئيسية</StyledLink></li>
+              <li><StyledLink to="/about">عن كنيستنا</StyledLink></li>
+              <li><StyledLink to="/services">خدمات الكنيسة</StyledLink></li>
+              <li><StyledLink to="/mass/schedule">القداسات</StyledLink></li>
+              <li><StyledLink to="/donations">التبرعات</StyledLink></li>
             </QuickLinks>
           </Section>
 
           <Section>
-            <h3>مواعيد الخدمة</h3>
+            <h3>مواعيد القداسات</h3>
             <QuickLinks>
-              <li><QuickLink to="/services/bible-study">درس الكتاب</QuickLink>: السبت 7:00 - 8:00 مساءًا</li>
-              <li><QuickLink to="/services/youth">اجتماع الشباب</QuickLink>: الخميس 7:30 - 9:30 مساءًا</li>
-              <li><QuickLink to="/services/education">مدارس الاحد</QuickLink>: الجمعة 10:00 - 1:00 صباحاً</li>
-              <li><QuickLink to="/services/kashafa">الكشافة</QuickLink>: الأربع 7:30 -9:30 مساءًا</li>
-              <li><QuickLink to="/services/abosefen">خدمة اخوة الرب</QuickLink>: الجمعة 7:30 - 9:30 مساءًا</li>
-              <li><QuickLink to="/services/preparation">خدمة اعداد خدام</QuickLink>: الجمعة 11:00 صباحًا - 1:00 ظهرًا</li>
-              <li><QuickLink to="/services/women">خدمة سيدات</QuickLink>: الاثنين 6:00 - 8:00 مساءًا</li>
-              <li><QuickLink to="/services/school">مدرسة الشمامسة - ابتدائي</QuickLink>: الجمعة 12:30 - 1:00 ظهرًا</li>
-              <li><QuickLink to="/services/random">خدمة المناطق العشوائية</QuickLink>: السبت التالت من كل شهر 9:30 صباحًا - 1:00 ظهرًا</li>
+              {schedules.map(s => (
+                <ScheduleItem key={s.id}>
+                  <span style={{ color: '#D4AF37' }}>{s.day}</span>
+                  <span>{s.time}</span>
+                </ScheduleItem>
+              ))}
             </QuickLinks>
           </Section>
         </Grid>
 
         <Copyright>
-          جميع الحقوق محفوظة © {new Date().getFullYear()} كنيسة الأنبا بولا - أرض الجولف
+          جميع الحقوق محفوظة © {new Date().getFullYear()} {settings.church_name}
         </Copyright>
-        <p style={{ textAlign: 'center', color: '#888' }}>تصميم وتطوير بواسطة <a href="https://bishoy-boules.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: '#D4AF37' }}>Bishoy</a></p>
+        <p style={{ textAlign: 'center', color: '#888' }}>
+          تصميم وتطوير بواسطة{' '}
+          <a href="https://bishoy-boules.vercel.app/" target="_blank" rel="noopener noreferrer"
+            style={{ color: '#D4AF37' }}>Bishoy</a>
+        </p>
       </Container>
     </FooterContainer>
   );

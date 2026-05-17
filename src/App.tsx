@@ -33,6 +33,14 @@ import Dashboard from './pages/Admin/Dashboard';
 import ManageNews from './pages/Admin/ManageNews';
 import ManageFathers from './pages/Admin/ManageFathers';
 import AdminFatherDetail from './pages/Admin/AdminFatherDetail';
+import ManageSettings from './pages/Admin/ManageSettings';
+import ManageTicker from './pages/Admin/ManageTicker';
+import ManageEvents from './pages/Admin/ManageEvents';
+import ManageServices from './pages/Admin/ManageServices';
+import ManageMassSchedule from './pages/Admin/ManageMassSchedule';
+import ManageCouncil from './pages/Admin/ManageCouncil';
+import ManageAlbum from './pages/Admin/ManageAlbum';
+import ServicePage from './pages/Services/ServicePage';
 import BibleStudy from './pages/Services/BibleStudy';
 import Youth from './pages/Services/Youth';
 import Preparation from './pages/Services/Preparation';
@@ -89,6 +97,7 @@ const App: React.FC = () => {
               <Route path="/services/youth" element={<Youth />} />
               <Route path="/services/preparation" element={<Preparation />} />
               <Route path="/services/school" element={<School />} />
+              <Route path="/services/:slug" element={<ServicePage />} />
               <Route path="/mass" element={<Mass />} />
               <Route path="/mass/schedule" element={<Schedule />} />
               <Route path="/library" element={<Library />} />
@@ -125,6 +134,62 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <AdminFatherDetail />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/settings"
+                element={
+                  <ProtectedRoute>
+                    <ManageSettings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/ticker"
+                element={
+                  <ProtectedRoute>
+                    <ManageTicker />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/events"
+                element={
+                  <ProtectedRoute>
+                    <ManageEvents />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/services"
+                element={
+                  <ProtectedRoute>
+                    <ManageServices />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/mass-schedule"
+                element={
+                  <ProtectedRoute>
+                    <ManageMassSchedule />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/council"
+                element={
+                  <ProtectedRoute>
+                    <ManageCouncil />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/album"
+                element={
+                  <ProtectedRoute>
+                    <ManageAlbum />
                   </ProtectedRoute>
                 }
               />

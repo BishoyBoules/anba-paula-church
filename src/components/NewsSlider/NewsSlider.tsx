@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase/config';
+import { getNews, NewsItem } from '../../services/api';
 import massHome from '../../img/massHome.jpeg';
 import youth from '../../img/youth.jpg';
 import godBrother from '../../img/godBrother.jpeg';
@@ -109,14 +108,8 @@ const ModalContent = styled.div`
   direction: rtl;
 
   @keyframes slideIn {
-    from {
-      transform: translateY(-50px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateY(-50px); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
   }
 
   @media (max-width: 768px) {
@@ -221,58 +214,25 @@ const NavigationButton = styled.button<{ direction: 'prev' | 'next' }>`
   }
 `;
 
-interface NewsItem {
-  id: number;
-  title: string;
-  date: string;
-  description: string;
-  image: string;
-}
-
-const newsItems: NewsItem[] = [
-  {
-    id: 1,
-    title: 'القداس الإلهي الأسبوعي',
-    date: '',
-    description: 'يقام القداس الإلهي كل يوم أحد الساعة ٨ صباحاً بكنيسة الأنبا بولا',
-    image: massHome
-  },
-  {
-    id: 2,
-    title: 'اجتماع الشباب',
-    date: '',
-    description: 'اجتماع شباب الكنيسة كل يوم خميس الساعة ٧:٣٠ مساءً',
-    image: youth
-  },
-  {
-    id: 3,
-    title: 'المبنى الخدمي الجديد',
-    date: '',
-    description: 'المعطي المسرور يحبه الرب. يمكنك التبرع من خلال صفحة التبرعات.',
-    image: '/newImgs/Media2.jpeg'
-  },
-  {
-    id: 4,
-    title: 'خدمة ابو سيفين لاخوة الرب',
-    date: '',
-    description: '"صِرْتُ لِلضُّعَفَاءِ كَضَعِيفٍ لأَرْبَحَ الضُّعَفَاءَ. صِرْتُ لِلْكُلِّ كُلَّ شَيْءٍ، لأُخَلِّصَ عَلَى كُلِّ حَال قَوْمًا" (رسالة بولس الرسول الأولى إلى أهل كورنثوس ٩: ٢٢)',
-    image: godBrother
-  },
-  {
-    id: 5,
-    title: 'خدمة مدارس الاحد',
-    date: '',
-    description: 'خدمة مدارس الاحد كل يوم جمعة الساعة ١٠ صباحاً',
-    image: madaresel7d
-  }
+const defaultNews: NewsItem[] = [
+  { id: 1, title: 'القداس الإلهي الأسبوعي', date: '', description: 'يقام القداس الإلهي كل يوم أحد الساعة ٨ صباحاً بكنيسة الأنبا بولا', image: massHome },
+  { id: 2, title: 'اجتماع الشباب', date: '', description: 'اجتماع شباب الكنيسة كل يوم خميس الساعة ٧:٣٠ مساءً', image: youth },
+  { id: 3, title: 'المبنى الخدمي الجديد', date: '', description: 'المعطي المسرور يحبه الرب. يمكنك التبرع من خلال صفحة التبرعات.', image: '/newImgs/Media2.jpeg' },
+  { id: 4, title: 'خدمة ابو سيفين لاخوة الرب', date: '', description: '"صِرْتُ لِلضُّعَفَاءِ كَضَعِيفٍ لأَرْبَحَ الضُّعَفَاءَ."', image: godBrother },
+  { id: 5, title: 'خدمة مدارس الاحد', date: '', description: 'خدمة مدارس الاحد كل يوم جمعة الساعة ١٠ صباحاً', image: madaresel7d },
 ];
 
 const NewsSlider: React.FC = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [news, setNews] = React.useState<NewsItem[]>(newsItems);
-  const [loading, setLoading] = React.useState(true);
+  const [news, setNews] = React.useState<NewsItem[]>(defaultNews);
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
   const [showModal, setShowModal] = useState(false);
+
+  React.useEffect(() => {
+    getNews()
+      .then(res => { if (res.data.length > 0) setNews(res.data); })
+      .catch(() => {});
+  }, []);
 
   const handleCardClick = (item: NewsItem) => {
     setSelectedNews(item);
@@ -284,48 +244,12 @@ const NewsSlider: React.FC = () => {
     setTimeout(() => setSelectedNews(null), 300);
   };
 
-  React.useEffect(() => {
-    fetchNews();
-  }, []);
-
-  const fetchNews = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'news'));
-      const newsData: NewsItem[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        newsData.push({
-          id: parseInt(doc.id, 36), // Convert doc ID to number
-          title: data.title,
-          date: data.date,
-          description: data.description,
-          image: data.image
-        });
-      });
-
-      // If there's data from Firebase, use it; otherwise use default
-      if (newsData.length > 0) {
-        setNews(newsData);
-      }
-    } catch (error) {
-      console.error('Error fetching news:', error);
-      // Keep using default news items on error
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const scroll = (direction: 'prev' | 'next') => {
     if (containerRef.current) {
-      const container = containerRef.current;
-      const scrollAmount = 320; // card width + gap
-      const scrollLeft = direction === 'prev'
-        ? container.scrollLeft - scrollAmount
-        : container.scrollLeft + scrollAmount;
-
-      container.scrollTo({
-        left: scrollLeft,
-        behavior: 'smooth'
+      const scrollAmount = 320;
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft + (direction === 'prev' ? -scrollAmount : scrollAmount),
+        behavior: 'smooth',
       });
     }
   };
@@ -334,9 +258,7 @@ const NewsSlider: React.FC = () => {
     <SliderContainer>
       <Container>
         <Title>أخبار الكنيسة</Title>
-        <NavigationButton direction="prev" onClick={() => scroll('prev')}>
-          ›
-        </NavigationButton>
+        <NavigationButton direction="prev" onClick={() => scroll('prev')}>›</NavigationButton>
         <CardsContainer ref={containerRef}>
           {news.map((item) => (
             <NewsCard key={item.id} onClick={() => handleCardClick(item)}>
@@ -345,9 +267,7 @@ const NewsSlider: React.FC = () => {
             </NewsCard>
           ))}
         </CardsContainer>
-        <NavigationButton direction="next" onClick={() => scroll('next')}>
-          ‹
-        </NavigationButton>
+        <NavigationButton direction="next" onClick={() => scroll('next')}>‹</NavigationButton>
       </Container>
 
       <Modal show={showModal} onClick={handleCloseModal}>

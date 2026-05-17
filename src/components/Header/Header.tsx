@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { getSettings } from '../../services/api';
 
 const HeaderContainer = styled.header`
   background: #3f0101c2;
@@ -70,16 +71,31 @@ const Quote = styled.p`
   }
 `;
 
+const defaults = {
+  church_name: 'كنيسة الأنبا بولا',
+  church_subtitle: 'بأرض الجولف',
+  church_quote: '"من يهرب من الضيق يهرب من الله"',
+  logo_url: '/img/st paula logo mid.png',
+};
+
 const Header: React.FC = () => {
+  const [settings, setSettings] = useState(defaults);
+
+  useEffect(() => {
+    getSettings()
+      .then(res => setSettings({ ...defaults, ...res.data }))
+      .catch(() => {});
+  }, []);
+
   return (
     <HeaderContainer>
       <Container>
         <Link to="/">
-          <Logo src="/img/st paula logo mid.png" alt="كنيسة الأنبا بولا" />
+          <Logo src={settings.logo_url} alt={settings.church_name} />
         </Link>
-        <Title style={{ fontSize: '3rem' }}>كنيسة الأنبا بولا</Title>
-        <Title style={{ fontSize: '2rem' }}>بأرض الجولف</Title>
-        <Quote>"من يهرب من الضيق يهرب من الله"</Quote>
+        <Title style={{ fontSize: '3rem' }}>{settings.church_name}</Title>
+        <Title style={{ fontSize: '2rem' }}>{settings.church_subtitle}</Title>
+        <Quote>{settings.church_quote}</Quote>
       </Container>
     </HeaderContainer>
   );

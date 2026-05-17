@@ -1,61 +1,55 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import {
-    User,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
-} from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { login as apiLogin } from '../services/api';
+
+interface AuthUser {
+  email: string;
+}
 
 interface AuthContextType {
-    currentUser: User | null;
-    login: (email: string, password: string) => Promise<void>;
-    logout: () => Promise<void>;
-    loading: boolean;
+  currentUser: AuthUser | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
-    currentUser: null,
-    login: async () => { },
-    logout: async () => { },
-    loading: true,
+  currentUser: null,
+  login: async () => {},
+  logout: async () => {},
+  loading: true,
 });
 
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-    const login = async (email: string, password: string) => {
-        await signInWithEmailAndPassword(auth, email, password);
-    };
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const email = localStorage.getItem('authEmail');
+    if (token && email) {
+      setCurrentUser({ email });
+    }
+    setLoading(false);
+  }, []);
 
-    const logout = async () => {
-        await signOut(auth);
-    };
+  const login = async (email: string, password: string) => {
+    const res = await apiLogin(email, password);
+    localStorage.setItem('authToken', res.data.token);
+    localStorage.setItem('authEmail', res.data.email);
+    setCurrentUser({ email: res.data.email });
+  };
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setCurrentUser(user);
-            setLoading(false);
-        });
+  const logout = async () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authEmail');
+    setCurrentUser(null);
+  };
 
-        return unsubscribe;
-    }, []);
-
-    const value = {
-        currentUser,
-        login,
-        logout,
-        loading,
-    };
-
-    return (
-        <AuthContext.Provider value={value}>
-            {!loading && children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ currentUser, login, logout, loading }}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };

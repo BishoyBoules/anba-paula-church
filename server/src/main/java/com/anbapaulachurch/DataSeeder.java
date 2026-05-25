@@ -114,6 +114,7 @@ public class DataSeeder implements CommandLineRunner {
             new String[]{"maps_url",              ""},
             new String[]{"youtube_url",           ""},
             new String[]{"soundcloud_url",        ""},
+            new String[]{"facebook_url",          ""},
             new String[]{"youtube_live_url",      ""},
             new String[]{"schedule_page_title",   "مواعيد القداسات"},
             new String[]{"schedule_note",         "في الأعياد والمناسبات الخاصة قد تتغير المواعيد. يرجى متابعة إعلانات الكنيسة."},

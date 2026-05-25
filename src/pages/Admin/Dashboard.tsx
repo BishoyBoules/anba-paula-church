@@ -105,90 +105,90 @@ const WelcomeMessage = styled.div`
 `;
 
 const Dashboard: React.FC = () => {
-    const { currentUser, logout } = useAuth();
-    const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            navigate('/admin/login');
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-    };
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/admin/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
-    return (
-        <DashboardContainer>
-            <Header>
-                <Title>لوحة التحكم</Title>
-                <LogoutButton onClick={handleLogout}>
-                    <FaSignOutAlt />
-                    تسجيل الخروج
-                </LogoutButton>
-            </Header>
+  return (
+    <DashboardContainer>
+      <Header>
+        <Title>لوحة التحكم</Title>
+        <LogoutButton onClick={handleLogout}>
+          <FaSignOutAlt />
+          تسجيل الخروج
+        </LogoutButton>
+      </Header>
 
-            <WelcomeMessage>
-                <h2>مرحباً بك في لوحة التحكم</h2>
-                <p>يمكنك من هنا إدارة محتوى موقع كنيسة الأنبا بولا</p>
-            </WelcomeMessage>
+      <WelcomeMessage>
+        <h2>مرحباً بك في لوحة التحكم</h2>
+        <p>يمكنك من هنا إدارة محتوى موقع كنيسة الأنبا بولا</p>
+      </WelcomeMessage>
 
-            <CardsGrid>
-                <Card to="/admin/news">
-                    <CardIcon><FaNewspaper /></CardIcon>
-                    <CardTitle>إدارة الأخبار</CardTitle>
-                    <CardDescription>إضافة وتعديل وحذف أخبار الكنيسة</CardDescription>
-                </Card>
+      <CardsGrid>
+        <Card to="/admin/news">
+          <CardIcon><FaNewspaper /></CardIcon>
+          <CardTitle>إدارة الأخبار</CardTitle>
+          <CardDescription>إضافة وتعديل وحذف أخبار الكنيسة</CardDescription>
+        </Card>
 
-                <Card to="/admin/fathers">
-                    <CardIcon><FaUsers /></CardIcon>
-                    <CardTitle>إدارة الآباء الكهنة</CardTitle>
-                    <CardDescription>إضافة وتعديل معلومات آباء الكنيسة ومواعيدهم</CardDescription>
-                </Card>
+        <Card to="/admin/fathers">
+          <CardIcon><FaUsers /></CardIcon>
+          <CardTitle>إدارة الآباء الكهنة</CardTitle>
+          <CardDescription>إضافة وتعديل معلومات آباء الكنيسة ومواعيدهم</CardDescription>
+        </Card>
 
-                <Card to="/admin/events">
-                    <CardIcon><FaCalendarAlt /></CardIcon>
-                    <CardTitle>الأخبار والفعاليات</CardTitle>
-                    <CardDescription>إدارة أخبار وفعاليات الكنيسة</CardDescription>
-                </Card>
+        <Card to="/admin/events">
+          <CardIcon><FaCalendarAlt /></CardIcon>
+          <CardTitle>الأخبار والفعاليات</CardTitle>
+          <CardDescription>إدارة أخبار وفعاليات الكنيسة</CardDescription>
+        </Card>
 
-                <Card to="/admin/album">
-                    <CardIcon><FaImages /></CardIcon>
-                    <CardTitle>ألبوم الصور</CardTitle>
-                    <CardDescription>إضافة وتنظيم صور الكنيسة والفعاليات</CardDescription>
-                </Card>
+        <Card to="/admin/album">
+          <CardIcon><FaImages /></CardIcon>
+          <CardTitle>ألبوم الصور</CardTitle>
+          <CardDescription>إضافة وتنظيم صور الكنيسة والفعاليات</CardDescription>
+        </Card>
 
-                <Card to="/admin/settings">
-                    <CardIcon><FaCog /></CardIcon>
-                    <CardTitle>إعدادات الموقع</CardTitle>
-                    <CardDescription>تعديل اسم الكنيسة والبيانات العامة وروابط التواصل</CardDescription>
-                </Card>
+        <Card to="/admin/settings">
+          <CardIcon><FaCog /></CardIcon>
+          <CardTitle>إعدادات الموقع</CardTitle>
+          <CardDescription>تعديل اسم الكنيسة والبيانات العامة وروابط التواصل</CardDescription>
+        </Card>
 
-                <Card to="/admin/ticker">
-                    <CardIcon><FaBullhorn /></CardIcon>
-                    <CardTitle>شريط الإعلانات</CardTitle>
-                    <CardDescription>إدارة النصوص المتحركة في أعلى الصفحة</CardDescription>
-                </Card>
+        <Card to="/admin/ticker">
+          <CardIcon><FaBullhorn /></CardIcon>
+          <CardTitle>شريط الإعلانات</CardTitle>
+          <CardDescription>إدارة النصوص المتحركة في اسفل الصفحة الرئسية</CardDescription>
+        </Card>
 
-                <Card to="/admin/services">
-                    <CardIcon><FaChurch /></CardIcon>
-                    <CardTitle>إدارة الخدمات</CardTitle>
-                    <CardDescription>تعديل بيانات خدمات الكنيسة ومواعيدها</CardDescription>
-                </Card>
+        <Card to="/admin/services">
+          <CardIcon><FaChurch /></CardIcon>
+          <CardTitle>إدارة الخدمات</CardTitle>
+          <CardDescription>تعديل بيانات خدمات الكنيسة ومواعيدها</CardDescription>
+        </Card>
 
-                <Card to="/admin/mass-schedule">
-                    <CardIcon><FaPray /></CardIcon>
-                    <CardTitle>مواعيد القداسات</CardTitle>
-                    <CardDescription>إضافة وتعديل جدول مواعيد القداسات</CardDescription>
-                </Card>
+        <Card to="/admin/mass-schedule">
+          <CardIcon><FaPray /></CardIcon>
+          <CardTitle>مواعيد القداسات</CardTitle>
+          <CardDescription>إضافة وتعديل جدول مواعيد القداسات</CardDescription>
+        </Card>
 
-                <Card to="/admin/council">
-                    <CardIcon><FaUserTie /></CardIcon>
-                    <CardTitle>مجلس الكنيسة</CardTitle>
-                    <CardDescription>إدارة أعضاء مجلس الكنيسة وأدوارهم</CardDescription>
-                </Card>
-            </CardsGrid>
-        </DashboardContainer>
-    );
+        <Card to="/admin/council">
+          <CardIcon><FaUserTie /></CardIcon>
+          <CardTitle>مجلس الكنيسة</CardTitle>
+          <CardDescription>إدارة أعضاء مجلس الكنيسة وأدوارهم</CardDescription>
+        </Card>
+      </CardsGrid>
+    </DashboardContainer>
+  );
 };
 
 export default Dashboard;

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { getChurchServices, ChurchService } from '../../services/api';
 
 const Nav = styled.nav`
   background: #fff;
@@ -173,6 +174,13 @@ const DropdownItem = styled.li`
 const Navigation: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [services, setServices] = useState<ChurchService[]>([]);
+
+  useEffect(() => {
+    getChurchServices()
+      .then(res => setServices(res.data.filter(s => s.active).sort((a, b) => a.displayOrder - b.displayOrder)))
+      .catch(() => {});
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -254,58 +262,17 @@ const Navigation: React.FC = () => {
             >
               الخدمات
             </StyledNavLink>
-            <Dropdown className="dropdown">
-              <DropdownItem>
-                <StyledNavLink to="/services/education" onClick={closeMenu}>
-                  التربية الكنسية
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/kashafa" onClick={closeMenu}>
-                  خدمة الكشافة
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/abosefen" onClick={closeMenu}>
-                  خدمة اخوة الرب
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/seniors" onClick={closeMenu}>
-                  خدمة المسنين
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/women" onClick={closeMenu}>
-                  خدمة السيدات
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/youth" onClick={closeMenu}>
-                  اجتماع الشباب
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/preparation" onClick={closeMenu}>
-                  خدمة اعداد خدام
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/bible-study" onClick={closeMenu}>
-                  اجتماع درس الكتاب
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/school" onClick={closeMenu}>
-                  مدرسة الشمامسة - ابتدائي
-                </StyledNavLink>
-              </DropdownItem>
-              <DropdownItem>
-                <StyledNavLink to="/services/random" onClick={closeMenu}>
-                  خدمة المناطق العشوائية
-                </StyledNavLink>
-              </DropdownItem>
-            </Dropdown>
+            {services.length > 0 && (
+              <Dropdown className="dropdown">
+                {services.map(s => (
+                  <DropdownItem key={s.id}>
+                    <StyledNavLink to={`/services/${s.slug}`} onClick={closeMenu}>
+                      {s.name}
+                    </StyledNavLink>
+                  </DropdownItem>
+                ))}
+              </Dropdown>
+            )}
           </NavItem>
           <NavItem className={activeDropdown === 'mass' ? 'active' : ''} onClick={closeMenu}>
             <StyledNavLink

@@ -110,6 +110,14 @@ const defaultSchedules: MassSchedule[] = [
   { id: 8, day: 'الاثنين إلى الخميس', time: '١٢:٠٠ - ٢:٠٠ ظهراً', displayOrder: 8, active: true },
 ];
 
+const toEmbedUrl = (url: string): string => {
+  if (!url) return '';
+  if (url.includes('/embed/')) return url;
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+  if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=0`;
+  return url;
+};
+
 const Schedule: React.FC = () => {
   const [schedules, setSchedules] = useState<MassSchedule[]>(defaultSchedules);
   const [youtubeUrl, setYoutubeUrl] = useState('');
@@ -122,7 +130,7 @@ const Schedule: React.FC = () => {
       .catch(() => {});
     getSettings()
       .then(res => {
-        if (res.data.youtube_live_url) setYoutubeUrl(res.data.youtube_live_url);
+        if (res.data.youtube_live_url) setYoutubeUrl(toEmbedUrl(res.data.youtube_live_url));
         if (res.data.schedule_page_title) setPageTitle(res.data.schedule_page_title);
         if (res.data.schedule_note) setNote(res.data.schedule_note);
       })

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 import { getAlbumPhotos, AlbumPhoto } from '../../services/api';
 
@@ -16,55 +16,77 @@ const Title = styled.h1`
   font-size: 2.5rem;
 `;
 
-const FilterContainer = styled.div`
+const AlbumSection = styled.div`
+  margin-bottom: 3rem;
+`;
+
+const AlbumTitle = styled.h2`
+  color: #8B0000;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #8B0000;
+`;
+
+const SliderWrapper = styled.div`
+  position: relative;
+`;
+
+const SliderTrack = styled.div`
   display: flex;
-  justify-content: center;
   gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-`;
-
-const FilterBtn = styled.button<{ active: boolean }>`
-  padding: 0.5rem 1.25rem;
-  border: 2px solid #8B0000;
-  border-radius: 25px;
-  background: ${p => p.active ? '#8B0000' : 'white'};
-  color: ${p => p.active ? 'white' : '#8B0000'};
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s;
-
-  &:hover { background: #8B0000; color: white; }
-`;
-
-const PhotoGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0;
+  direction: rtl;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 `;
 
 const PhotoCard = styled(motion.div)`
+  flex: 0 0 240px;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-
   &:hover img { transform: scale(1.05); }
 `;
 
 const Photo = styled.img`
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
   transition: transform 0.3s;
+  display: block;
 `;
 
 const PhotoTitle = styled.p`
-  padding: 0.75rem;
+  padding: 0.6rem;
   background: white;
   color: #333;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   text-align: center;
+`;
+
+const NavBtn = styled.button<{ side: 'left' | 'right' }>`
+  position: absolute;
+  top: 50%;
+  ${p => p.side}: -15px;
+  transform: translateY(-50%);
+  background: #8B0000;
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  &:hover { background: #3f0101; }
+  @media (max-width: 768px) { display: none; }
 `;
 
 const Overlay = styled(motion.div)`
@@ -102,65 +124,65 @@ const Empty = styled.p`
   padding: 3rem;
 `;
 
+type GroupedAlbum = { category: string; photos: AlbumPhoto[] };
+
+const AlbumTrack: React.FC<{ photos: AlbumPhoto[]; onSelect: (p: AlbumPhoto) => void }> = ({ photos, onSelect }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const scroll = (dir: 'left' | 'right') => {
+    if (ref.current) ref.current.scrollBy({ left: dir === 'right' ? 260 : -260, behavior: 'smooth' });
+  };
+  return (
+    <SliderWrapper>
+      <NavBtn side="right" onClick={() => scroll('right')}>‹</NavBtn>
+      <SliderTrack ref={ref}>
+        {photos.map((photo, i) => (
+          <PhotoCard key={photo.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.04 }} onClick={() => onSelect(photo)}>
+            <Photo src={photo.image} alt={photo.title} />
+            {photo.title && <PhotoTitle>{photo.title}</PhotoTitle>}
+          </PhotoCard>
+        ))}
+      </SliderTrack>
+      <NavBtn side="left" onClick={() => scroll('left')}>›</NavBtn>
+    </SliderWrapper>
+  );
+};
+
 const Album: React.FC = () => {
-  const [photos, setPhotos] = useState<AlbumPhoto[]>([]);
-  const [categories, setCategories] = useState<string[]>(['الكل']);
-  const [activeFilter, setActiveFilter] = useState('الكل');
+  const [albums, setAlbums] = useState<GroupedAlbum[]>([]);
   const [selected, setSelected] = useState<AlbumPhoto | null>(null);
 
   useEffect(() => {
     getAlbumPhotos()
       .then(res => {
-        setPhotos(res.data);
-        const cats = Array.from(new Set(res.data.map(p => p.category).filter(Boolean)));
-        if (cats.length > 0) setCategories(['الكل', ...cats]);
+        const map = new Map<string, AlbumPhoto[]>();
+        res.data.forEach(p => {
+          const cat = p.category || 'عام';
+          if (!map.has(cat)) map.set(cat, []);
+          map.get(cat)!.push(p);
+        });
+        setAlbums(Array.from(map.entries()).map(([category, photos]) => ({ category, photos })));
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
-
-  const filtered = activeFilter === 'الكل' ? photos : photos.filter(p => p.category === activeFilter);
 
   return (
     <PageContainer>
       <Title>ألبوم الصور</Title>
 
-      {categories.length > 1 && (
-        <FilterContainer>
-          {categories.map(cat => (
-            <FilterBtn key={cat} active={activeFilter === cat} onClick={() => setActiveFilter(cat)}>
-              {cat}
-            </FilterBtn>
-          ))}
-        </FilterContainer>
-      )}
-
-      {filtered.length === 0 ? (
-        <Empty>لا توجد صور في هذا القسم</Empty>
+      {albums.length === 0 ? (
+        <Empty>لا توجد صور بعد</Empty>
       ) : (
-        <PhotoGrid>
-          {filtered.map((photo, i) => (
-            <PhotoCard
-              key={photo.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.05 }}
-              onClick={() => setSelected(photo)}
-            >
-              <Photo src={photo.image} alt={photo.title} />
-              {photo.title && <PhotoTitle>{photo.title}</PhotoTitle>}
-            </PhotoCard>
-          ))}
-        </PhotoGrid>
+        albums.map(album => (
+          <AlbumSection key={album.category}>
+            <AlbumTitle>{album.category}</AlbumTitle>
+            <AlbumTrack photos={album.photos} onSelect={setSelected} />
+          </AlbumSection>
+        ))
       )}
 
       <AnimatePresence>
         {selected && (
-          <Overlay
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelected(null)}
-          >
+          <Overlay initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelected(null)}>
             <CloseBtn onClick={() => setSelected(null)}><FaTimes /></CloseBtn>
             <LargeImage src={selected.image} alt={selected.title} onClick={e => e.stopPropagation()} />
           </Overlay>

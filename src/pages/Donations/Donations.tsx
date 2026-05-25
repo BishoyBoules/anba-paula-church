@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaHandHoldingHeart, FaCreditCard, FaMoneyBillWave } from 'react-icons/fa';
+import { FaHandHoldingHeart, FaCreditCard } from 'react-icons/fa';
+import { getSettings } from '../../services/api';
 
 const PageContainer = styled.div`
   padding: 2rem;
@@ -88,56 +89,33 @@ const MethodDescription = styled.p`
   margin-bottom: 1.5rem;
 `;
 
-const AccountDetails = styled.div`
+const DetailRow = styled.div`
   background: #f9f9f9;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 5px;
-  margin-top: 1rem;
-`;
-
-const AccountNumber = styled.p`
+  margin-top: 0.5rem;
   font-family: monospace;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #333;
-  margin: 0.5rem 0;
+  text-align: right;
 `;
 
 const Donations: React.FC = () => {
-  const donationMethods = [
-    {
-      id: 1,
-      icon: <FaHandHoldingHeart />,
-      title: 'التبرع المباشر',
-      description: 'يمكنك التبرع مباشرة في الكنيسة',
-      details: [
-        'متاح يومياً من 9 صباحاً حتى 5 مساءً'
-      ]
-    },
-    {
-      id: 2,
-      icon: <FaCreditCard />,
-      title: 'التحويل البنكي',
-      description: 'يمكنك التحويل مباشرة إلى حساب الكنيسة',
-      details: [
-        'بالمصري: 1383070552561400018',
-        'بالدولار: 1383060552561400018',
-        'باليورو: 1383170552561401011',
-        'اسم البنك: البنك الأهلي',
-        'IBAN: EG170003013830705525614000180',
-        'اسم الحساب: كنيسة الأنبا بولا'
-      ]
-    },
-    // {
-    //   id: 3,
-    //   icon: <FaMoneyBillWave />,
-    //   title: 'التبرع الشهري',
-    //   description: 'اشترك في برنامج التبرع الشهري لدعم أنشطة الكنيسة',
-    //   details: [
-    //     'تواصل مع مكتب الكنيسة للاشتراك',
-    //     'الحد الأدنى: 100 جنيه شهرياً'
-    //   ]
-    // }
-  ];
+  const [settings, setSettings] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    getSettings()
+      .then(res => setSettings(res.data))
+      .catch(() => {});
+  }, []);
+
+  const bankDetails = [
+    settings.donation_account_number && `رقم الحساب: ${settings.donation_account_number}`,
+    settings.donation_bank_name     && `اسم البنك: ${settings.donation_bank_name}`,
+    settings.donation_iban          && `IBAN: ${settings.donation_iban}`,
+    settings.donation_swift         && `SWIFT: ${settings.donation_swift}`,
+    settings.donation_account_name  && `اسم الحساب: ${settings.donation_account_name}`,
+  ].filter(Boolean) as string[];
 
   return (
     <PageContainer>
@@ -153,21 +131,23 @@ const Donations: React.FC = () => {
       <ContentSection>
         <SectionTitle>طرق التبرع</SectionTitle>
         <DonationMethodsGrid>
-          {donationMethods.map((method) => (
-            <MethodCard
-              key={method.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <IconWrapper>{method.icon}</IconWrapper>
-              <MethodTitle>{method.title}</MethodTitle>
-              <MethodDescription>{method.description}</MethodDescription>
-              {method.details.map((detail, index) => (
-                <AccountDetails key={index}>{detail}</AccountDetails>
+          <MethodCard initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <IconWrapper><FaHandHoldingHeart /></IconWrapper>
+            <MethodTitle>التبرع المباشر</MethodTitle>
+            <MethodDescription>يمكنك التبرع مباشرة في الكنيسة</MethodDescription>
+            <DetailRow>متاح يومياً من 9 صباحاً حتى 5 مساءً</DetailRow>
+          </MethodCard>
+
+          {bankDetails.length > 0 && (
+            <MethodCard initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
+              <IconWrapper><FaCreditCard /></IconWrapper>
+              <MethodTitle>التحويل البنكي</MethodTitle>
+              <MethodDescription>يمكنك التحويل مباشرة إلى حساب الكنيسة</MethodDescription>
+              {bankDetails.map((detail, i) => (
+                <DetailRow key={i}>{detail}</DetailRow>
               ))}
             </MethodCard>
-          ))}
+          )}
         </DonationMethodsGrid>
       </ContentSection>
     </PageContainer>

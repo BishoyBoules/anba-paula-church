@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FaSoundcloud, FaYoutube, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaSoundcloud, FaYoutube, FaFacebook, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import { getSettings, getMassSchedules, MassSchedule } from '../../services/api';
 
 const FooterContainer = styled.footer`
@@ -119,6 +119,7 @@ const defaultSettings = {
   maps_url: 'https://maps.app.goo.gl/n9ifZ77nuL23egoq6?g_st=aw',
   youtube_url: 'https://www.youtube.com/channel/UC4k_Tq45EqB6_VlLfO_Nh_A',
   soundcloud_url: 'https://soundcloud.com/user-587199843',
+  facebook_url: '',
   church_name: 'كنيسة الأنبا بولا - أرض الجولف',
 };
 
@@ -171,6 +172,11 @@ const Footer: React.FC = () => {
               {settings.soundcloud_url && (
                 <SocialLink href={settings.soundcloud_url} target="_blank" aria-label="SoundCloud">
                   <FaSoundcloud />
+                </SocialLink>
+              )}
+              {settings.facebook_url && (
+                <SocialLink href={settings.facebook_url} target="_blank" aria-label="Facebook">
+                  <FaFacebook />
                 </SocialLink>
               )}
             </SocialLinks>

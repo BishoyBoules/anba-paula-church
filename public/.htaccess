@@ -1,0 +1,10 @@
+Options -MultiViews
+RewriteEngine On
+
+# Proxy API and uploaded images to the Spring Boot backend on port 8080
+RewriteRule ^api/(.*)$ http://127.0.0.1:8080/api/$1 [P,L]
+RewriteRule ^uploads/(.*)$ http://127.0.0.1:8080/uploads/$1 [P,L]
+
+# React Router — serve index.html for everything else
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]

@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { getNews, NewsItem } from '../../services/api';
-import massHome from '../../img/massHome.jpeg';
-import youth from '../../img/youth.jpg';
-import godBrother from '../../img/godBrother.jpeg';
-import madaresel7d from '../../img/madaresel7d.jpeg';
+import { getNews, getEvents, NewsItem } from '../../services/api';
 
 const SliderContainer = styled.section`
   padding: 4rem 1rem;
   background: #fff;
-  direction: rtl;
+  direction: ltr;
 
   @media (max-width: 768px) {
     padding: 2rem 0.5rem;
@@ -20,6 +16,7 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
+  direction: ltr;
 `;
 
 const Title = styled.h2`
@@ -27,6 +24,7 @@ const Title = styled.h2`
   color: #8B0000;
   margin-bottom: 3rem;
   font-size: 2rem;
+  direction: rtl;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
@@ -36,12 +34,14 @@ const Title = styled.h2`
 
 const CardsContainer = styled.div`
   display: flex;
+  flex-direction: row;
   gap: 2rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
+  overflow-x: scroll;
   padding: 1rem 0.5rem;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  direction: ltr;
+  unicode-bidi: bidi-override;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -81,8 +81,8 @@ const NewsTitle = styled.h3`
   text-align: center;
 `;
 
-const Modal = styled.div<{ show: boolean }>`
-  display: ${({ show }) => (show ? 'flex' : 'none')};
+const Modal = styled.div<{ $show: boolean }>`
+  display: ${({ $show }) => ($show ? 'flex' : 'none')};
   position: fixed;
   z-index: 1000;
   left: 0;
@@ -214,25 +214,32 @@ const NavigationButton = styled.button<{ direction: 'prev' | 'next' }>`
   }
 `;
 
-const defaultNews: NewsItem[] = [
-  { id: 1, title: 'القداس الإلهي الأسبوعي', date: '', description: 'يقام القداس الإلهي كل يوم أحد الساعة ٨ صباحاً بكنيسة الأنبا بولا', image: massHome },
-  { id: 2, title: 'اجتماع الشباب', date: '', description: 'اجتماع شباب الكنيسة كل يوم خميس الساعة ٧:٣٠ مساءً', image: youth },
-  { id: 3, title: 'المبنى الخدمي الجديد', date: '', description: 'المعطي المسرور يحبه الرب. يمكنك التبرع من خلال صفحة التبرعات.', image: '/newImgs/Media2.jpeg' },
-  { id: 4, title: 'خدمة ابو سيفين لاخوة الرب', date: '', description: '"صِرْتُ لِلضُّعَفَاءِ كَضَعِيفٍ لأَرْبَحَ الضُّعَفَاءَ."', image: godBrother },
-  { id: 5, title: 'خدمة مدارس الاحد', date: '', description: 'خدمة مدارس الاحد كل يوم جمعة الساعة ١٠ صباحاً', image: madaresel7d },
-];
-
 const NewsSlider: React.FC = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [news, setNews] = React.useState<NewsItem[]>(defaultNews);
+  const [news, setNews] = React.useState<NewsItem[]>();
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   React.useEffect(() => {
-    getNews()
-      .then(res => { if (res.data.length > 0) setNews(res.data); })
-      .catch(() => {});
+    Promise.all([getNews().catch(() => ({ data: [] })), getEvents().catch(() => ({ data: [] }))])
+      .then(([newsRes, eventsRes]) => {
+        const fromEvents: NewsItem[] = eventsRes.data.map((e: any) => ({
+          id: e.id + 100000,
+          title: e.title,
+          date: e.date,
+          description: e.description,
+          image: e.image,
+        }));
+        const combined = [...newsRes.data, ...fromEvents];
+        if (combined.length > 0) setNews(combined);
+      });
   }, []);
+
+  React.useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollLeft = 0;
+    }
+  }, [news]);
 
   const handleCardClick = (item: NewsItem) => {
     setSelectedNews(item);
@@ -258,19 +265,19 @@ const NewsSlider: React.FC = () => {
     <SliderContainer>
       <Container>
         <Title>أخبار الكنيسة</Title>
-        <NavigationButton direction="prev" onClick={() => scroll('prev')}>›</NavigationButton>
-        <CardsContainer ref={containerRef}>
-          {news.map((item) => (
+        <NavigationButton direction="prev" onClick={() => scroll('prev')}>‹</NavigationButton>
+        <CardsContainer ref={containerRef} style={{ direction: 'rtl' }}>
+          {news?.map((item) => (
             <NewsCard key={item.id} onClick={() => handleCardClick(item)}>
               <NewsImage src={item.image} alt={item.title} />
               <NewsTitle>{item.title}</NewsTitle>
             </NewsCard>
           ))}
         </CardsContainer>
-        <NavigationButton direction="next" onClick={() => scroll('next')}>‹</NavigationButton>
+        <NavigationButton direction="next" onClick={() => scroll('next')}>›</NavigationButton>
       </Container>
 
-      <Modal show={showModal} onClick={handleCloseModal}>
+      <Modal $show={showModal} onClick={handleCloseModal}>
         <ModalContent onClick={(e) => e.stopPropagation()}>
           <CloseButton onClick={handleCloseModal}>×</CloseButton>
           {selectedNews && (

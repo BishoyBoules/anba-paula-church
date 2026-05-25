@@ -3,8 +3,8 @@ import styled, { keyframes } from 'styled-components';
 import { getTicker } from '../../services/api';
 
 const scroll = keyframes`
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 `;
 
 const TickerContainer = styled.div`
@@ -62,7 +62,7 @@ const NewsTicker: React.FC = () => {
   useEffect(() => {
     getTicker()
       .then(res => { if (res.data.length > 0) setItems(res.data.map(t => t.content)); })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (

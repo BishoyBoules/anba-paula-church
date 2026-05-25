@@ -131,6 +131,7 @@ const defaultSettings: Record<string, string> = {
   maps_url: '',
   youtube_url: '',
   soundcloud_url: '',
+  facebook_url: '',
   youtube_live_url: '',
   schedule_page_title: '',
   schedule_note: '',
@@ -234,9 +235,13 @@ const ManageSettings: React.FC = () => {
             <Label>رابط SoundCloud</Label>
             <Input value={settings.soundcloud_url} onChange={e => set('soundcloud_url', e.target.value)} />
           </FormGroup>
+          <FormGroup>
+            <Label>رابط Facebook</Label>
+            <Input value={settings.facebook_url} onChange={e => set('facebook_url', e.target.value)} placeholder="https://www.facebook.com/..." />
+          </FormGroup>
           <FormGroup style={{ gridColumn: '1 / -1' }}>
-            <Label>رابط البث المباشر (YouTube embed URL)</Label>
-            <Input value={settings.youtube_live_url} onChange={e => set('youtube_live_url', e.target.value)} placeholder="https://www.youtube.com/embed/..." />
+            <Label>رابط البث المباشر (يمكن لصق رابط YouTube العادي أو رابط embed)</Label>
+            <Input value={settings.youtube_live_url} onChange={e => set('youtube_live_url', e.target.value)} placeholder="https://www.youtube.com/watch?v=... أو https://www.youtube.com/embed/..." />
           </FormGroup>
         </FormGrid>
       </SectionCard>
